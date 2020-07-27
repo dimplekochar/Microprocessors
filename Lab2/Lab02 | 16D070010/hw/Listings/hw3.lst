@@ -1,0 +1,72 @@
+A51 MACRO ASSEMBLER  HW3                                                                  08/05/2018 09:16:21 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\hw3.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE hw3.asm SET(SMALL) DEBUG PRINT(.\Listings\hw3.lst) OBJECT(.\Objects\hw3
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG 00H
+0000 020062            2             LJMP MAIN
+                       3     
+                       4     
+                       5     ;----------------------------------------------------------------
+0050                   6             ORG 50H
+                       7     
+0050                   8     zeroOut:
+                       9                     using 0
+0050 C000             10                     PUSH AR0
+0052 C002             11                     PUSH AR2
+0054 AA50             12                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+0056 A851             13                     MOV R0, 51H ;Specified value of P in 51H moved to R0
+0058                  14     LOOP:
+0058 7600             15             MOV @R0, #0H
+005A 08               16                     INC R0
+005B DAFB             17                     DJNZ R2, LOOP
+005D D002             18                     POP AR2
+005F D000             19                     POP AR0
+0061 22               20                     RET
+                      21     ;----------------------------------------------------------------------
+                      22     
+0062                  23     MAIN:                                   ;Initializing some test values in address from 31H 
+                             to 43H (13 values)
+0062 75600D           24                     MOV 60H, #13
+0065 7931             25                     MOV R1, #31H
+0067 7402             26                     MOV A, #2H
+0069                  27     INITV:                                  
+0069 F7               28             MOV @R1, A
+006A 04               29                     INC A
+006B 09               30                     INC R1
+006C D560FA           31                     DJNZ 60H, INITV
+                      32                                                     ;using the subroutine to clear values from 
+                             31H to 42H (12 values)
+006F 75500C           33                     MOV 50H, #12
+0072 755131           34                     MOV 51H, #31H
+0075 120050           35                     LCALL zeroOut
+0078 80FE             36                     HERE:SJMP HERE
+                      37                     END
+                             
+                             ;--------------------------------------------------------------------------
+A51 MACRO ASSEMBLER  HW3                                                                  08/05/2018 09:16:21 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+HERE . . . . . . .  C ADDR   0078H   A   
+INITV. . . . . . .  C ADDR   0069H   A   
+LOOP . . . . . . .  C ADDR   0058H   A   
+MAIN . . . . . . .  C ADDR   0062H   A   
+ZEROOUT. . . . . .  C ADDR   0050H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

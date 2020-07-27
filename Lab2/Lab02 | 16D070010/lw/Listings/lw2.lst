@@ -1,0 +1,82 @@
+A51 MACRO ASSEMBLER  LW2                                                                  08/06/2018 09:49:59 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lw2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lw2.asm SET(SMALL) DEBUG PRINT(.\Listings\lw2.lst) OBJECT(.\Objects\lw2
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG 00H
+0000 02007A            2             LJMP MAIN
+                       3     
+                       4     
+                       5     ;----------------------------------------------------------------
+0050                   6             ORG 50H
+                       7     
+0050                   8     bin2ascii:
+0050 AA50              9                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+0052 A851             10                     MOV R0, 51H ;Specified value of P to read in 51H moved to R0
+0054 A952             11                     MOV R1, 52H ;Specified value of P to read in 52H moved to R1
+0056                  12     LOOP:
+0056 C3               13                     CLR C
+0057 E6               14             MOV A, @R0
+0058 54F0             15                     ANL A, #0F0H
+005A C4               16                     SWAP A
+005B F7               17                     MOV @R1, A
+005C 9409             18                     SUBB A, #09H
+005E E7               19                     MOV A, @R1
+005F 4002             20                     JC rel
+0061 2407             21                     ADD A, #7H
+0063                  22                     rel: 
+0063 2430             23                     ADD A, #30H
+0065 F7               24                     MOV @R1, A
+0066 09               25                     INC R1
+0067 E6               26                     MOV A, @R0
+0068 540F             27                     ANL A, #0FH
+006A F7               28                     MOV @R1, A
+006B 9409             29                     SUBB A, #09H
+006D E7               30                     MOV A, @R1
+006E 4002             31                     JC rell
+0070 2407             32                     ADD A, #7H
+0072                  33                     rell: 
+0072 2430             34                     ADD A, #30H
+0074 F7               35                     MOV @R1, A
+0075 09               36                     INC R1
+0076 08               37                     INC R0
+0077 DADD             38                     DJNZ R2, LOOP
+0079 22               39                     RET
+                      40     ;----------------------------------------------------------------------
+                      41     
+007A                  42     MAIN:                                   
+007A 755002           43                     MOV 50H, #2
+007D 755131           44                     MOV 51H, #31H
+0080 755211           45                     MOV 52H, #11H
+0083 75312F           46                     MOV 31H, #2FH
+0086 75323E           47                     MOV 32H, #3EH
+0089 120050           48                     LCALL bin2ascii
+008C 80FE             49                     HERE:SJMP HERE
+                      50                     END
+                             
+                             ;--------------------------------------------------------------------------
+A51 MACRO ASSEMBLER  LW2                                                                  08/06/2018 09:49:59 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BIN2ASCII. . . . .  C ADDR   0050H   A   
+HERE . . . . . . .  C ADDR   008CH   A   
+LOOP . . . . . . .  C ADDR   0056H   A   
+MAIN . . . . . . .  C ADDR   007AH   A   
+REL. . . . . . . .  C ADDR   0063H   A   
+RELL . . . . . . .  C ADDR   0072H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

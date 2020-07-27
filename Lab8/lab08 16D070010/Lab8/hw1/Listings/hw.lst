@@ -1,0 +1,108 @@
+C51 COMPILER V9.59.0.0   HW                                                                10/08/2018 15:41:37 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE HW
+OBJECT MODULE PLACED IN .\Objects\hw.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe hw.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\hw.lst
+                    -) TABS(2) OBJECT(.\Objects\hw.obj)
+
+line level    source
+
+   1          /* @section  I N C L U D E S */
+   2          #include "at89c5131.h"
+   3          #include "stdio.h"
+   4          #define LCD_data  P2                // LCD Data port
+   5          #define sample 1
+   6          void Timer_Init();
+   7          void ISR_Serial();
+   8          void init_serial();
+   9          unsigned char output;
+  10          unsigned char input;
+  11          unsigned char temp;
+  12          // sfr ACC = 0xE0; 
+  13          sbit parity = PSW^0;
+  14          sbit LED = P1^4;
+  15          
+  16          void ISR_Serial(void) interrupt 4
+  17          {
+  18   1      //ISR for serial interrupt
+  19   1        
+  20   1        temp = PSW;
+  21   1        if(RI==1)
+  22   1        {
+  23   2          input = SBUF;
+  24   2          RI=0;
+  25   2        }
+  26   1        if(TI==1)
+  27   1        {output = 'A';
+  28   2        ACC = output;
+  29   2          ACC = ACC +0;
+  30   2          TB8 = parity;
+  31   2          SBUF = ACC;
+  32   2          
+  33   2          LED = !LED; 
+  34   2          TI = 0;
+  35   2        }
+  36   1        PSW = temp;
+  37   1      
+  38   1      }
+  39          
+  40          void Timer_Init()
+  41          {
+  42   1        TMOD = TMOD | 0x20;
+  43   1        TH1 = 204;  
+  44   1      }
+  45          
+  46          void init_serial()
+  47          {
+  48   1      //Initialize serial communication and interrupts
+  49   1        EA=1;
+  50   1        ES=1;
+  51   1        ET1=0;
+  52   1        SCON = SCON | 0x0c0;
+  53   1      }
+  54          
+C51 COMPILER V9.59.0.0   HW                                                                10/08/2018 15:41:37 PAGE 2   
+
+  55          void delay_ms(int delay)
+  56          {
+  57   1        int d=0;
+  58   1        while(delay>0)
+  59   1        {
+  60   2          for(d=0;d<382;d++);
+  61   2          delay--;
+  62   2        }
+  63   1      }
+  64          
+  65          void main()
+  66          { 
+  67   1        init_serial();
+  68   1        Timer_Init();
+  69   1        TR1=1;
+  70   1        RI=0;
+  71   1        TI=0;
+  72   1        LED = 0;
+  73   1      
+  74   1        output = 'A';
+  75   1        ACC = output;
+  76   1          ACC = ACC +0;
+  77   1          TB8 = parity;
+  78   1          SBUF = ACC;
+  79   1          while(1){
+  80   2        }
+  81   1      }
+  82          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    118    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

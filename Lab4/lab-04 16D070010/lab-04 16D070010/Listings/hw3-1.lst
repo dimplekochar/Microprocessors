@@ -1,0 +1,422 @@
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\hw3-1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE hw3-1.asm SET(SMALL) DEBUG PRINT(.\Listings\hw3-1.lst) OBJECT(.\Objects
+                      \hw3-1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; This subroutine writes characters on the LCD
+  00A0                 2     LCD_data equ P2    ;LCD Data port
+  0080                 3     LCD_rs   equ P0.0  ;LCD Register Select
+  0081                 4     LCD_rw   equ P0.1  ;LCD Read/Write
+  0082                 5     LCD_en   equ P0.2  ;LCD Enable
+                       6     
+0000                   7     ORG 0000H
+0000 0203BC            8     LJMP MAIN
+                       9     
+0200                  10     org 200h
+                      11             
+                      12     ;------------------------LCD Initialisation routine----------------------------------------
+                             ------------
+0200                  13     lcd_init:
+0200 75A038           14              mov   LCD_data,#38H  ;Function set: 2 Line, 8-bit, 5x7 dots
+0203 C280             15              clr   LCD_rs         ;Selected command register
+0205 C281             16              clr   LCD_rw         ;We are writing in instruction register
+0207 D282             17              setb  LCD_en         ;Enable H->L
+0209 5173             18                      acall delay
+020B C282             19              clr   LCD_en
+020D 5173             20                  acall delay
+                      21     
+020F 75A00C           22              mov   LCD_data,#0CH  ;Display on, Curson off
+0212 C280             23              clr   LCD_rs         ;Selected instruction register
+0214 C281             24              clr   LCD_rw         ;We are writing in instruction register
+0216 D282             25              setb  LCD_en         ;Enable H->L
+0218 5173             26                      acall delay
+021A C282             27              clr   LCD_en
+                      28              
+021C 5173             29                      acall delay
+021E 75A001           30              mov   LCD_data,#01H  ;Clear LCD
+0221 C280             31              clr   LCD_rs         ;Selected command register
+0223 C281             32              clr   LCD_rw         ;We are writing in instruction register
+0225 D282             33              setb  LCD_en         ;Enable H->L
+0227 5173             34                      acall delay
+0229 C282             35              clr   LCD_en
+                      36              
+022B 5173             37                      acall delay
+                      38     
+022D 75A006           39              mov   LCD_data,#06H  ;Entry mode, auto increment with no shift
+0230 C280             40              clr   LCD_rs         ;Selected command register
+0232 C281             41              clr   LCD_rw         ;We are writing in instruction register
+0234 D282             42              setb  LCD_en         ;Enable H->L
+0236 5173             43                      acall delay
+0238 C282             44              clr   LCD_en
+                      45     
+023A 5173             46                      acall delay
+                      47              
+023C 22               48              ret                  ;Return from routine
+                      49     
+                      50     ;-----------------------command sending routine-------------------------------------
+023D                  51      lcd_command:
+023D F5A0             52              mov   LCD_data,A     ;Move the command to LCD port
+023F C280             53              clr   LCD_rs         ;Selected command register
+0241 C281             54              clr   LCD_rw         ;We are writing in instruction register
+0243 D282             55              setb  LCD_en         ;Enable H->L
+0245 5173             56                      acall delay
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     2
+
+0247 C282             57              clr   LCD_en
+0249 5173             58                      acall delay
+                      59         
+024B 22               60              ret  
+                      61     ;-----------------------data sending routine-------------------------------------          
+                                       
+024C                  62      lcd_senddata:
+024C F5A0             63               mov   LCD_data,A     ;Move the command to LCD port
+024E D280             64              setb  LCD_rs         ;Selected data register
+0250 C281             65              clr   LCD_rw         ;We are writing
+0252 D282             66              setb  LCD_en         ;Enable H->L
+0254 5173             67                      acall delay
+0256 C282             68              clr   LCD_en
+0258 5173             69              acall delay
+025A 5173             70                      acall delay
+025C 22               71              ret                  ;Return from busy routine
+                      72     
+                      73     ;-----------------------text strings sending routine-------------------------------------
+025D                  74     lcd_sendstring:
+                      75                     Using 0
+025D C000             76                             push AR0
+025F C0E0             77                 push 0e0h
+                      78             
+0261 7820             79                 MOV R0, #20H
+0263 E4               80             clr   a                 ;clear Accumulator for any previous data
+0264 E6               81             mov  a, @R0        ;load the first character in accumulator
+0265 6007             82              jz    exit              ;go to exit if zero
+0267 514C             83              acall lcd_senddata      ;send first char
+0269 08               84              inc   R0              ;increment data pointer
+026A E4               85              clr   a                 ;clear Accumulator for any previous data
+026B E6               86             mov  a, @R0        ;load the first character in accumulator
+026C 514C             87              acall lcd_senddata      ;send first char
+026E D0E0             88     exit:    pop 0e0h
+0270 D000             89                             pop AR0
+0272 22               90              ret                     ;End of routine
+                      91     
+                      92     ;----------------------delay routine-----------------------------------------------------
+0273 C000             93     delay:   push 0
+0275 C001             94              push 1
+0277 7801             95              mov r0,#1
+0279 79FF             96     loop2:   mov r1,#255
+027B D9FE             97              loop1:  djnz r1, loop1
+027D D8FA             98              djnz r0, loop2
+027F D001             99              pop 1
+0281 D000            100              pop 0 
+0283 22              101              ret
+                     102     
+                     103     ;----------------read and pack nibbles-----------------------------------------------------
+                             ---
+0284                 104     readNibble:
+0284                 105     rel:
+0284 7590FF          106     MOV P1,#0FFH
+0287 1202CA          107     LCALL DELAY5
+028A C297            108     CLR P1.7
+028C C296            109     CLR P1.6
+028E C295            110     CLR P1.5
+0290 C294            111     CLR P1.4
+0292 120304          112     LCALL DELAY1
+0295 A293            113     MOV C, P1.3
+0297 9297            114     MOV P1.7, C
+0299 A292            115     MOV C, P1.2
+029B 9296            116     MOV P1.6, C
+029D A291            117     MOV C, P1.1
+029F 9295            118     MOV P1.5, C
+02A1 A290            119     MOV C, P1.0
+02A3 9294            120     MOV P1.4, C
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     3
+
+02A5 E4              121     CLR A
+02A6 C3              122     CLR C
+02A7 A297            123     MOV C, P1.7
+02A9 33              124     RLC A
+02AA A296            125     MOV C, P1.6
+02AC 33              126     RLC A
+02AD A295            127     MOV C, P1.5
+02AF 33              128     RLC A
+02B0 A294            129     MOV C, P1.4
+02B2 33              130     RLC A
+02B3 F560            131     MOV 60H, A
+02B5 1202CA          132     LCALL DELAY5
+02B8 E4              133     CLR A
+02B9 C3              134     CLR C
+02BA A293            135     MOV C, P1.3
+02BC 33              136     RLC A
+02BD A292            137     MOV C, P1.2
+02BF 33              138     RLC A
+02C0 A291            139     MOV C, P1.1
+02C2 33              140     RLC A
+02C3 A290            141     MOV C, P1.0
+02C5 33              142     RLC A
+02C6 B40FBB          143     CJNE A, #0FH, rel
+02C9 22              144     RET
+                     145     
+02CA                 146     DELAY5: 
+                     147     USING 0
+02CA C0D0            148     PUSH PSW
+02CC C003            149     PUSH AR3
+02CE C004            150     PUSH AR4
+02D0 C005            151     PUSH AR5
+02D2 7B64            152     MOV R3,#100
+02D4 7CC8            153     del5:MOV R4,#200 
+02D6 7DFF            154                BACK55: MOV R5,#0FFH 
+02D8 DDFE            155                          BACK5: DJNZ R5, BACK5 
+02DA DCFA            156                                     DJNZ R4, BACK55
+02DC DBF6            157                                     DJNZ R3,del5
+02DE D005            158     POP AR5
+02E0 D004            159     POP AR4
+02E2 D003            160     POP AR3
+02E4 D0D0            161     POP PSW
+02E6 22              162     RET
+                     163     
+02E7                 164     DELAY2: 
+                     165     USING 0
+02E7 C0D0            166     PUSH PSW
+02E9 C003            167     PUSH AR3
+02EB C004            168     PUSH AR4
+02ED C005            169     PUSH AR5
+02EF 7B28            170     MOV R3,#40
+02F1 7CC8            171     del2:MOV R4,#200 
+02F3 7DFF            172                BACK22: MOV R5,#0FFH 
+02F5 DDFE            173                      BACK2: DJNZ R5, BACK2 
+02F7 DCFA            174                                     DJNZ R4, BACK22
+02F9 DBF6            175                                     DJNZ R3,del2
+02FB D005            176     POP AR5
+02FD D004            177     POP AR4
+02FF D003            178     POP AR3
+0301 D0D0            179     POP PSW
+0303 22              180     RET
+                     181     
+0304                 182     DELAY1: 
+                     183     USING 0
+0304 C0D0            184     PUSH PSW
+0306 C003            185     PUSH AR3
+0308 C004            186     PUSH AR4
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     4
+
+030A C005            187     PUSH AR5
+030C 7B14            188     MOV R3,#20
+030E 7CC8            189     del1:MOV R4,#200 
+0310 7DFF            190                BACK11: MOV R5,#0FFH 
+0312 DDFE            191                  BACK1: DJNZ R5, BACK1 
+0314 DCFA            192                                     DJNZ R4, BACK11
+0316 DBF6            193                                     DJNZ R3,del1
+0318 D005            194     POP AR5
+031A D004            195     POP AR4
+031C D003            196     POP AR3
+031E D0D0            197     POP PSW
+0320 22              198     RET
+                     199     
+0321                 200     packNibbles:
+                     201     USING 0
+0321 C000            202             PUSH AR0
+0323 A851            203     MOV R0, 51H
+0325 E4              204     CLR A
+0326 C3              205     CLR C
+0327 E54E            206     MOV A, 4EH
+0329 C4              207     SWAP A
+032A 254F            208     ADD A, 4FH
+032C F6              209     MOV @R0, A
+032D D000            210     POP AR0
+032F 22              211     RET
+                     212     
+0330                 213     displayValues:
+                     214     USING 0
+0330 C000            215             PUSH AR0
+0332 C001            216             PUSH AR1
+0334 E590            217     MOV A, P1
+0336 2568            218     ADD A, 68H
+0338 F565            219     MOV 65H, A
+033A F8              220     MOV R0, A
+033B 120371          221     LCALL bin2ascii
+033E B6000F          222     CJNE @R0, #0, display
+0341 75A001          223     mov   LCD_data,#01H  ;Clear LCD
+0344 C280            224              clr   LCD_rs         ;Selected command register
+0346 C281            225              clr   LCD_rw         ;We are writing in instruction register
+0348 D282            226              setb  LCD_en         ;Enable H->L
+034A 5173            227                      acall delay
+034C C282            228              clr   LCD_en
+034E 8019            229     SJMP ending1
+0350 75A000          230     display: mov P2,#00h
+                     231              ;mov P1,#00h
+0353 5173            232              acall delay
+0355 5173            233                      acall delay
+0357 5100            234              acall lcd_init      ;initialise LCD
+0359 5173            235               acall delay
+035B 5173            236               acall delay
+035D 5173            237               acall delay
+035F 7485            238               mov a,#85h             ;Put cursor on first row,5 column
+0361 513D            239               acall lcd_command      ;send command to LCD
+0363 5173            240               acall delay
+0365 515D            241               acall lcd_sendstring     ;call text strings sending routine
+0367 5173            242               acall delay
+                     243             
+0369 1202E7          244             ending1: LCALL DELAY2
+036C D001            245     POP AR1
+036E D000            246     POP AR0
+0370 22              247     RET
+                     248     
+                     249     ;---------------------------------------------------------------------------
+0371                 250     bin2ascii:
+                     251     USING 0
+0371 C0D0            252     PUSH PSW
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     5
+
+0373 C000            253     PUSH AR0
+0375 C001            254     PUSH AR1
+0377 C002            255     PUSH AR2
+0379 A865            256     MOV R0, 65H
+037B 7920            257     MOV R1, #20H
+037D 7A01            258     MOV R2, #1
+                     259     
+037F E6              260     LOOP: MOV A,@R0
+0380 54F0            261               ANL A,#0F0H
+0382 C4              262               SWAP A
+0383 F7              263           MOV @R1,A
+0384 940A            264               SUBB A,#0AH
+0386 4002            265               JC NEXT1
+0388 5007            266               JNC NEXT2
+                     267     
+038A E7              268     NEXT1: MOV A, @R1
+038B 2430            269                ADD A, #30H
+038D F7              270                MOV @R1, A
+038E 09              271                INC R1
+038F 8007            272                SJMP PART2
+                     273     
+0391 E7              274     NEXT2: MOV A, @R1
+0392 2437            275                ADD A, #37H
+0394 F7              276                MOV @R1, A
+0395 09              277                INC R1
+0396 8000            278                SJMP PART2
+                     279     
+0398 E6              280     PART2: MOV A,@R0
+0399 540F            281               ANL A,#0FH
+039B F7              282           MOV @R1,A
+039C 940A            283               SUBB A,#0AH
+039E 4002            284               JC NEXT3
+03A0 5007            285               JNC NEXT4
+                     286               
+03A2 E7              287     NEXT3: MOV A, @R1
+03A3 2430            288                ADD A, #30H
+03A5 F7              289                MOV @R1, A
+03A6 09              290                INC R1
+03A7 8007            291                SJMP ENDING
+                     292     
+03A9 E7              293     NEXT4: MOV A, @R1
+03AA 2437            294                ADD A, #37H
+03AC F7              295                MOV @R1, A
+03AD 09              296                INC R1
+03AE 8000            297                SJMP ENDING
+                     298               
+03B0 08              299     ENDING: INC R0
+03B1 DACC            300                     DJNZ R2, LOOP
+03B3 D002            301                     POP AR2
+03B5 D001            302                     POp AR1
+03B7 D000            303                     POP AR0
+03B9 D0D0            304                     POP PSW
+03BB 22              305                     RET
+                     306     
+                     307     
+                     308     ;---------------------------------------------------------------------------
+03BC                 309     MAIN:
+03BC 755002          310     MOV 50H, #2 ;value of k
+03BF 755140          311     MOV 51H, #40H ;value of p
+03C2 AB51            312     MOV R3, 51H
+03C4 8B68            313     MOV 68H, R3
+03C6 AA50            314     MOV R2, 50H
+03C8                 315     Looprun:
+03C8 120284          316     LCALL readNibble; Read the MSB from the user and store in into locations 4EH
+03CB 85604E          317     MOV 4EH, 60H
+03CE 120284          318     LCALL readNibble; Read the LSB from the user and store in into locations 4FH
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     6
+
+03D1 85604F          319     MOV 4FH, 60H
+03D4 120321          320     LCALL packNibbles;
+03D7 0551            321     INC 51H
+03D9 DAED            322     DJNZ R2, Looprun
+03DB C297            323     CLR P1.7
+03DD C296            324     CLR P1.6
+03DF C295            325     CLR P1.5
+03E1 C294            326     CLR P1.4
+03E3 754E00          327     MOV 4EH, #0
+03E6 754F00          328     MOV 4FH, #0
+03E9 1202E7          329     LCALL DELAY2
+03EC                 330     STOP:
+03EC 120330          331     LCALL displayValues
+03EF 80FB            332     SJMP STOP
+                     333     
+                     334     END
+A51 MACRO ASSEMBLER  HW3_1                                                                10/05/2018 22:27:15 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+AR4. . . . . . . .  D ADDR   0004H   A   
+AR5. . . . . . . .  D ADDR   0005H   A   
+BACK1. . . . . . .  C ADDR   0312H   A   
+BACK11 . . . . . .  C ADDR   0310H   A   
+BACK2. . . . . . .  C ADDR   02F5H   A   
+BACK22 . . . . . .  C ADDR   02F3H   A   
+BACK5. . . . . . .  C ADDR   02D8H   A   
+BACK55 . . . . . .  C ADDR   02D6H   A   
+BIN2ASCII. . . . .  C ADDR   0371H   A   
+DEL1 . . . . . . .  C ADDR   030EH   A   
+DEL2 . . . . . . .  C ADDR   02F1H   A   
+DEL5 . . . . . . .  C ADDR   02D4H   A   
+DELAY. . . . . . .  C ADDR   0273H   A   
+DELAY1 . . . . . .  C ADDR   0304H   A   
+DELAY2 . . . . . .  C ADDR   02E7H   A   
+DELAY5 . . . . . .  C ADDR   02CAH   A   
+DISPLAY. . . . . .  C ADDR   0350H   A   
+DISPLAYVALUES. . .  C ADDR   0330H   A   
+ENDING . . . . . .  C ADDR   03B0H   A   
+ENDING1. . . . . .  C ADDR   0369H   A   
+EXIT . . . . . . .  C ADDR   026EH   A   
+LCD_COMMAND. . . .  C ADDR   023DH   A   
+LCD_DATA . . . . .  D ADDR   00A0H   A   
+LCD_EN . . . . . .  B ADDR   0080H.2 A   
+LCD_INIT . . . . .  C ADDR   0200H   A   
+LCD_RS . . . . . .  B ADDR   0080H.0 A   
+LCD_RW . . . . . .  B ADDR   0080H.1 A   
+LCD_SENDDATA . . .  C ADDR   024CH   A   
+LCD_SENDSTRING . .  C ADDR   025DH   A   
+LOOP . . . . . . .  C ADDR   037FH   A   
+LOOP1. . . . . . .  C ADDR   027BH   A   
+LOOP2. . . . . . .  C ADDR   0279H   A   
+LOOPRUN. . . . . .  C ADDR   03C8H   A   
+MAIN . . . . . . .  C ADDR   03BCH   A   
+NEXT1. . . . . . .  C ADDR   038AH   A   
+NEXT2. . . . . . .  C ADDR   0391H   A   
+NEXT3. . . . . . .  C ADDR   03A2H   A   
+NEXT4. . . . . . .  C ADDR   03A9H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PACKNIBBLES. . . .  C ADDR   0321H   A   
+PART2. . . . . . .  C ADDR   0398H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READNIBBLE . . . .  C ADDR   0284H   A   
+REL. . . . . . . .  C ADDR   0284H   A   
+STOP . . . . . . .  C ADDR   03ECH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

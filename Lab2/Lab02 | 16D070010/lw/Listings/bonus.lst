@@ -1,0 +1,222 @@
+A51 MACRO ASSEMBLER  BONUS                                                                08/06/2018 22:15:47 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\bonus.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE bonus.asm SET(SMALL) DEBUG PRINT(.\Listings\bonus.lst) OBJECT(.\Objects
+                      \bonus.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 00H 
+0000 020104            2             LJMP MAIN
+0050                   3             ORG 50H 
+0050 7581CF            4             MOV SP,#0CFH;-----------------------Initialize STACK POINTER
+0053                   5     zeroOut:
+                       6                     USING 0
+0053 C000              7                     PUSH AR0
+0055 C002              8                     PUSH AR2
+0057 AA50              9                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+0059 A851             10                     MOV R0, 51H ;Specified value of P in 51H moved to R0
+005B                  11             LOOP0:
+005B 7600             12             MOV @R0, #0H
+005D 08               13                     INC R0
+005E DAFB             14                     DJNZ R2, LOOP0
+0060 D002             15                     POP AR2
+0062 D000             16                     POP AR0
+0064 22               17                     RET
+0065                  18     display:
+                      19                     USING 1
+0065 C00E             20                     PUSH AR6
+0067 C00D             21                     PUSH AR5
+0069 C00B             22                     PUSH AR3
+006B C00A             23                     PUSH AR2
+006D C009             24                     PUSH AR1
+006F C008             25                     PUSH AR0
+0071 AA50             26                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+0073 A851             27                     MOV R0, 51H ;Specified value of P in 51H moved to R0
+0075                  28                     LOOP1:
+0075 E6               29             MOV A, @R0
+0076 13               30                     RRC A
+0077 9294             31                     MOV P1.4, C
+0079 13               32                     RRC A
+007A 9295             33                     MOV P1.5, C
+007C 13               34                     RRC A
+007D 9296             35                     MOV P1.6, C
+007F 13               36                     RRC A
+0080 9297             37                     MOV P1.7, C
+0082 7B14             38                     MOV R3, #20
+0084                  39                     ONESEC:
+0084 7EC8             40                     MOV R6,#200     ;For delay of 50ms, given in labsheet
+0086                  41                     BACK1:
+0086 7DFF             42                     MOV R5,#0FFH
+0088                  43                     BACK:
+0088 DDFE             44                     DJNZ R5, BACK
+008A DEFA             45                     DJNZ R6, BACK1
+008C DBF6             46                     DJNZ R3, ONESEC
+008E 08               47                     INC R0
+008F DAE4             48                     DJNZ R2, LOOP1
+0091 D008             49                     POP AR0
+0093 D009             50                     POP AR1
+0095 D00A             51                     POP AR2
+0097 D00B             52                     POP AR3
+0099 D00D             53                     POP AR5
+009B D00E             54                     POP AR6
+009D 22               55     RET
+                      56                     
+                      57     
+A51 MACRO ASSEMBLER  BONUS                                                                08/06/2018 22:15:47 PAGE     2
+
+                      58     
+009E                  59     bin2ascii:
+                      60                     USING 2
+009E C012             61                     PUSH AR2
+00A0 C011             62                     PUSH AR1
+00A2 C010             63                     PUSH AR0
+                      64     
+00A4 AA50             65                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+00A6 A851             66                     MOV R0, 51H ;Specified value of P to read in 51H moved to R0
+00A8 A952             67                     MOV R1, 52H ;Specified value of P to read in 52H moved to R1
+00AA                  68             LOOP2:
+00AA C3               69                     CLR C
+00AB E6               70             MOV A, @R0
+00AC 54F0             71                     ANL A, #0F0H
+00AE C4               72                     SWAP A
+00AF F7               73                     MOV @R1, A
+00B0 9409             74                     SUBB A, #09H
+00B2 E7               75                     MOV A, @R1
+00B3 4002             76                     JC rel
+00B5 2407             77                     ADD A, #7H
+00B7                  78                     rel: 
+00B7 2430             79                     ADD A, #30H
+00B9 F7               80                     MOV @R1, A
+00BA 09               81                     INC R1
+00BB E6               82                     MOV A, @R0
+00BC 540F             83                     ANL A, #0FH
+00BE F7               84                     MOV @R1, A
+00BF 9409             85                     SUBB A, #09H
+00C1 E7               86                     MOV A, @R1
+00C2 4002             87                     JC rell
+00C4 2407             88                     ADD A, #7H
+00C6                  89                     rell: 
+00C6 2430             90                     ADD A, #30H
+00C8 F7               91                     MOV @R1, A
+00C9 09               92                     INC R1
+00CA 08               93                     INC R0
+00CB DADD             94                     DJNZ R2, LOOP2
+00CD D010             95                     POP AR0
+00CF D011             96                     POP AR1
+00D1 D012             97                     POP AR2
+00D3 22               98                     RET
+                      99                     
+                     100                     
+00D4                 101     memcpy:
+                     102                     USING 3
+00D4 C01A            103                     PUSH AR2
+00D6 C019            104                     PUSH AR1
+00D8 C018            105                     PUSH AR0
+00DA AA50            106                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+00DC A851            107                     MOV R0, 51H ;Specified value of P in 51H to read moved to R0 (A)
+00DE A952            108                     MOV R1, 52H ;Specified value of P in 52H to write moved to R1 (B)
+00E0 E8              109                     MOV A, R0
+00E1 99              110                     SUBB A, R1
+00E2 5002            111                     JNC sidha
+00E4 4007            112                     JC ulta
+00E6                 113                     sidha:
+00E6 E6              114                     MOV A, @R0
+00E7 F7              115                     MOV @R1, A
+00E8 08              116                     INC R0
+00E9 09              117                     INC R1
+00EA DAFA            118                     DJNZ R2, sidha
+00EC 22              119                     RET
+00ED                 120                     ulta:
+00ED E8              121                     MOV A, R0
+00EE 2A              122                     ADD A, R2
+00EF 9401            123                     SUBB A, #1H
+A51 MACRO ASSEMBLER  BONUS                                                                08/06/2018 22:15:47 PAGE     3
+
+00F1 F8              124                     MOV R0, A
+00F2 E9              125                     MOV A, R1
+00F3 2A              126                     ADD A, R2
+00F4 9401            127                     SUBB A, #1H
+00F6 F9              128                     MOV R1, A
+00F7                 129                     LOOP3:
+00F7 E6              130                     MOV A, @R0
+00F8 F7              131                     MOV @R1, A
+00F9 18              132                     DEC R0
+00FA 19              133                     DEC R1
+00FB DAFA            134                     DJNZ R2, LOOP3
+00FD D018            135                     POP AR0
+00FF D019            136                     POP AR1
+0101 D01A            137                     POP AR2
+0103 22              138                     RET
+                     139     
+0104                 140     MAIN:
+0104 7401            141     MOV A, #1H
+0106 7920            142     MOV R1, #20H
+0108 756025          143     MOV 60H, #25H
+010B                 144     INITV:                                  
+010B F7              145             MOV @R1, A
+010C 04              146                     INC A
+010D 09              147                     INC R1
+010E D560FA          148                     DJNZ 60H, INITV
+0111 755005          149     MOV 50H,#5;------------------------No of memory locations of Array A 
+0114 755145          150     MOV 51H,#45H;------------------------Array A start location 
+0117 120053          151     LCALL zeroOut;----------------------Clear memory
+011A 755005          152     MOV 50H,#5;------------------------No of memory locations of Array B 
+011D 755140          153     MOV 51H,#40H;------------------------Array B start location 
+0120 120053          154     LCALL zeroOut;----------------------Clear memory
+0123 755005          155     MOV 50H,#5;------------------------No of memory locations of source array 
+0126 755135          156     MOV 51H,#35H;------------------------Source array start location 
+0129 755255          157     MOV 52H,#55H;------------------------Destination array(A) start location 
+012C 12009E          158     LCALL bin2ascii;--------------------Write at memory location
+012F 755005          159     MOV 50H,#5;------------------------No of elements of Array A to be copied in Array B 
+0132 755130          160     MOV 51H,#30H;------------------------Array A start location 
+0135 755265          161     MOV 52H,#65H;------------------------Array B start location 
+0138 1200D4          162     LCALL memcpy;-----------------------Copy block of memory to other location
+013B 755005          163     MOV 50H,#5;------------------------No of memory locations of Array B 
+013E 755120          164     MOV 51H,#20H;------------------------Array B start location 
+0141 754F25          165     MOV 4FH,#25H;------------------------User defined delay value 
+0144 120065          166     LCALL display;----------------------Display the last four bits of elements on LEDs
+0147 80FE            167     here:SJMP here;---------------------WHILE loop(Infinite Loop) 
+                     168     END 
+A51 MACRO ASSEMBLER  BONUS                                                                08/06/2018 22:15:47 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0018H   A   
+AR1. . . . . . . .  D ADDR   0019H   A   
+AR2. . . . . . . .  D ADDR   001AH   A   
+AR3. . . . . . . .  D ADDR   001BH   A   
+AR5. . . . . . . .  D ADDR   001DH   A   
+AR6. . . . . . . .  D ADDR   001EH   A   
+BACK . . . . . . .  C ADDR   0088H   A   
+BACK1. . . . . . .  C ADDR   0086H   A   
+BIN2ASCII. . . . .  C ADDR   009EH   A   
+DISPLAY. . . . . .  C ADDR   0065H   A   
+HERE . . . . . . .  C ADDR   0147H   A   
+INITV. . . . . . .  C ADDR   010BH   A   
+LOOP0. . . . . . .  C ADDR   005BH   A   
+LOOP1. . . . . . .  C ADDR   0075H   A   
+LOOP2. . . . . . .  C ADDR   00AAH   A   
+LOOP3. . . . . . .  C ADDR   00F7H   A   
+MAIN . . . . . . .  C ADDR   0104H   A   
+MEMCPY . . . . . .  C ADDR   00D4H   A   
+ONESEC . . . . . .  C ADDR   0084H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+REL. . . . . . . .  C ADDR   00B7H   A   
+RELL . . . . . . .  C ADDR   00C6H   A   
+SIDHA. . . . . . .  C ADDR   00E6H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+ULTA . . . . . . .  C ADDR   00EDH   A   
+ZEROOUT. . . . . .  C ADDR   0053H   A   
+
+
+REGISTER BANK(S) USED: 0 1 2 3 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

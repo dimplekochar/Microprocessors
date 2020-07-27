@@ -1,0 +1,1 @@
+"hw.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\hw.lst) TABS (2) OBJECT(.\Objects\hw.obj)

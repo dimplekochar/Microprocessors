@@ -1,0 +1,97 @@
+A51 MACRO ASSEMBLER  LW1                                                                  08/06/2018 09:16:55 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lw1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lw1.asm SET(SMALL) DEBUG PRINT(.\Listings\lw1.lst) OBJECT(.\Objects\lw1
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG 00H
+0000 020074            2             LJMP MAIN
+                       3     
+                       4     ;----------------------------------------------------------------
+0050                   5             ORG 50H
+                       6     
+0050                   7     display:
+0050 AA50              8                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+0052 A851              9                     MOV R0, 51H ;Specified value of P in 51H moved to R0
+0054                  10                     LOOP:
+0054 E6               11             MOV A, @R0
+0055 13               12                     RRC A
+0056 9297             13                     MOV P1.7, C
+0058 13               14                     RRC A
+0059 9296             15                     MOV P1.6, C
+005B 13               16                     RRC A
+005C 9295             17                     MOV P1.5, C
+005E 13               18                     RRC A
+005F 9294             19                     MOV P1.4, C
+0061 7B14             20                     MOV R3, #20
+0063 1169             21                     ACALL ONESEC
+0065 08               22                     INC R0
+0066 DAEC             23                     DJNZ R2, LOOP
+0068 22               24     RET
+                      25             
+                      26     
+                      27                     
+0069                  28     ONESEC:         ;For making 50ms*20=1sec
+0069 7AC8             29             MOV R2,#200     ;For delay of 50ms, given in labsheet
+006B                  30             BACK1:
+006B 7DFF             31             MOV R5,#0FFH
+006D                  32             BACK:
+006D DDFE             33             DJNZ R5, BACK
+006F DAFA             34             DJNZ R2, BACK1
+0071 DBF6             35             DJNZ R3, ONESEC
+0073 22               36     RET
+                      37             
+                      38         
+                      39     
+                      40     ;----------------------------------------------------------------------
+                      41     
+0074                  42     MAIN:
+0074 C297             43                     CLR P1.7
+0076 C296             44                     CLR P1.6
+0078 C295             45                     CLR P1.5
+007A C294             46                     CLR P1.4
+007C                  47                     INITV:                                  
+007C F7               48             MOV @R1, A
+007D 04               49                     INC A
+007E 09               50                     INC R1
+007F D560FA           51                     DJNZ 60H, INITV
+                      52                                                     
+0082 75500C           53                     MOV 50H, #12
+0085 755131           54                     MOV 51H, #31H
+0088 E4               55                     CLR A
+0089 C3               56                     CLR C
+008A 1150             57                     ACALL display           
+A51 MACRO ASSEMBLER  LW1                                                                  08/06/2018 09:16:55 PAGE     2
+
+008C 80FE             58                     HERE: SJMP HERE
+                      59     
+                      60                     END
+                             
+                             ;--------------------------------------------------------------------------
+A51 MACRO ASSEMBLER  LW1                                                                  08/06/2018 09:16:55 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BACK . . . . . . .  C ADDR   006DH   A   
+BACK1. . . . . . .  C ADDR   006BH   A   
+DISPLAY. . . . . .  C ADDR   0050H   A   
+HERE . . . . . . .  C ADDR   008CH   A   
+INITV. . . . . . .  C ADDR   007CH   A   
+LOOP . . . . . . .  C ADDR   0054H   A   
+MAIN . . . . . . .  C ADDR   0074H   A   
+ONESEC . . . . . .  C ADDR   0069H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

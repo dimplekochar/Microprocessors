@@ -1,0 +1,70 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    08/06/2018  07:54:47  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\hw2.obj TO .\Objects\hw2 PRINT (.\Listings\hw2.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\hw2.obj (HW2)
+
+
+LINK MAP OF MODULE:  .\Objects\hw2 (HW2)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0075H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\hw2 (HW2)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        HW2
+  C:0063H         SYMBOL        BACK
+  C:0061H         SYMBOL        BACK1
+  C:0050H         SYMBOL        DELAY
+  C:005FH         SYMBOL        HALFSEC
+  C:0073H         SYMBOL        HERE
+  C:005DH         SYMBOL        LOOP
+  C:006CH         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  C:0000H         LINE#         2
+  C:0050H         LINE#         8
+  C:0052H         LINE#         9
+  C:0054H         LINE#         10
+  C:0056H         LINE#         11
+  C:0058H         LINE#         12
+  C:005AH         LINE#         13
+  C:005CH         LINE#         14
+  C:005DH         LINE#         17
+  C:005FH         LINE#         19
+  C:0061H         LINE#         21
+  C:0063H         LINE#         23
+  C:0065H         LINE#         24
+  C:0067H         LINE#         25
+  C:0069H         LINE#         26
+  C:006BH         LINE#         27
+  C:006CH         LINE#         34
+  C:006FH         LINE#         35
+  C:0071H         LINE#         37
+  C:0073H         LINE#         38
+  -------         ENDMOD        HW2
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/06/2018  07:54:47  PAGE 2
+
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0028H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=117
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

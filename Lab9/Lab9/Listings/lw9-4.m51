@@ -1,0 +1,240 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/22/2018  16:23:10  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\lw9-4.obj TO .\Objects\lw9-4 PRINT (.\Listings\lw9-4.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\lw9-4.obj (LW9_4)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\lw9-4 (LW9_4)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            BIT     0020H.0   0000H.3   UNIT         ?BI?LW9_4
+                    0020H.3   0000H.5                *** GAP ***
+            DATA    0021H     004FH     UNIT         ?DT?LW9_4
+            IDATA   0070H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+                    000EH     003DH                  *** GAP ***
+            CODE    004BH     0003H     ABSOLUTE     
+                    004EH     07B2H                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     005AH     UNIT         ?C_INITSEG
+            CODE    08E6H     004AH     UNIT         ?PR?MAIN?LW9_4
+            CODE    0930H     0029H     UNIT         ?PR?_SDELAY?LW9_4
+            CODE    0959H     0021H     UNIT         ?PR?_DELAY_MS?LW9_4
+            CODE    097AH     0020H     UNIT         ?PR?TIMER0_INT?LW9_4
+            CODE    099AH     001CH     UNIT         ?PR?IT_SPI?LW9_4
+            CODE    09B6H     000EH     UNIT         ?PR?TIMER_INIT?LW9_4
+            CODE    09C4H     000DH     UNIT         ?PR?SPI_INIT?LW9_4
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\lw9-4 (LW9_4)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?LW9_4
+  +--> ?C_INITSEG
+
+?PR?MAIN?LW9_4
+  +--> ?PR?SPI_INIT?LW9_4
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2018  16:23:10  PAGE 2
+
+
+  +--> ?PR?TIMER_INIT?LW9_4
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\lw9-4 (LW9_4)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LW9_4
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0021H         PUBLIC        serial_data
+  D:0090H         PUBLIC        P1
+  C:097AH         PUBLIC        timer0_int
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C3H         PUBLIC        SPCON
+  C:0930H         PUBLIC        _sdelay
+  B:00A8H.7       PUBLIC        EA
+  D:00C4H         PUBLIC        SPSTA
+  D:00A8H         PUBLIC        IEN0
+  D:00B1H         PUBLIC        IEN1
+  D:00B8H         PUBLIC        IPL0
+  B:00B0H.5       PUBLIC        FS
+  B:0020H.0       PUBLIC        transmit_completed
+  D:00D8H         PUBLIC        CCON
+  C:08E6H         PUBLIC        main
+  B:0020H.1       PUBLIC        offset_null
+  C:099AH         PUBLIC        it_SPI
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:0090H.4       PUBLIC        led
+  D:0022H         PUBLIC        lupt
+  B:00A8H.1       PUBLIC        ET0
+  B:00B0H.4       PUBLIC        CS_BAR
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0959H         PUBLIC        _delay_ms
+  B:0088H.4       PUBLIC        TR0
+  D:00F8H         PUBLIC        UEPINT
+  D:0062H         PUBLIC        d
+  C:09C4H         PUBLIC        SPI_Init
+  D:00C8H         PUBLIC        T2CON
+  D:0064H         PUBLIC        i
+  B:0020H.2       PUBLIC        roundoff
+  D:0066H         PUBLIC        j
+  D:0068H         PUBLIC        k
+  D:006AH         PUBLIC        l
+  D:006CH         PUBLIC        m
+  D:006EH         PUBLIC        xx
+  D:006FH         PUBLIC        x
+  C:09B6H         PUBLIC        Timer_Init
+  D:00C5H         PUBLIC        SPDAT
+  -------         PROC          MAIN
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2018  16:23:10  PAGE 3
+
+
+  C:08E6H         LINE#         36
+  C:08E6H         LINE#         37
+  C:08E6H         LINE#         38
+  C:08E8H         LINE#         39
+  C:08EAH         LINE#         40
+  C:08EDH         LINE#         41
+  C:08F0H         LINE#         42
+  C:08F2H         LINE#         43
+  C:08F2H         LINE#         44
+  C:08F7H         LINE#         45
+  C:0904H         LINE#         46
+  C:0906H         LINE#         47
+  C:0908H         LINE#         49
+  C:0910H         LINE#         50
+  C:0913H         LINE#         51
+  C:0915H         LINE#         52
+  C:091DH         LINE#         53
+  C:0920H         LINE#         54
+  C:0922H         LINE#         55
+  C:0924H         LINE#         56
+  C:0926H         LINE#         57
+  C:0928H         LINE#         58
+  C:092EH         LINE#         59
+  -------         ENDPROC       MAIN
+  -------         PROC          IT_SPI
+  C:099AH         LINE#         66
+  C:09A3H         LINE#         68
+  C:09AAH         LINE#         69
+  C:09AAH         LINE#         70
+  C:09AAH         LINE#         71
+  C:09ADH         LINE#         72
+  C:09AFH         LINE#         73
+  C:09AFH         LINE#         75
+  C:09AFH         LINE#         77
+  C:09AFH         LINE#         79
+  C:09AFH         LINE#         80
+  C:09AFH         LINE#         81
+  C:09AFH         LINE#         82
+  -------         ENDPROC       IT_SPI
+  -------         PROC          SPI_INIT
+  C:09C4H         LINE#         85
+  C:09C4H         LINE#         86
+  C:09C4H         LINE#         87
+  C:09C6H         LINE#         88
+  C:09C8H         LINE#         89
+  C:09CBH         LINE#         94
+  C:09CEH         LINE#         95
+  C:09D0H         LINE#         100
+  -------         ENDPROC       SPI_INIT
+  -------         PROC          _SDELAY
+  D:0006H         SYMBOL        delay
+  -------         DO            
+  D:0005H         SYMBOL        d
+  -------         ENDDO         
+  C:0930H         LINE#         111
+  C:0930H         LINE#         112
+  C:0930H         LINE#         113
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2018  16:23:10  PAGE 4
+
+
+  C:0930H         LINE#         114
+  C:093BH         LINE#         115
+  C:093BH         LINE#         116
+  C:0951H         LINE#         117
+  C:0956H         LINE#         118
+  C:0958H         LINE#         119
+  -------         ENDPROC       _SDELAY
+  -------         PROC          _DELAY_MS
+  D:0006H         SYMBOL        delay
+  -------         DO            
+  D:0004H         SYMBOL        d
+  -------         ENDDO         
+  C:0959H         LINE#         126
+  C:0959H         LINE#         127
+  C:0959H         LINE#         128
+  C:0959H         LINE#         129
+  C:0964H         LINE#         130
+  C:0964H         LINE#         131
+  C:0972H         LINE#         132
+  C:0977H         LINE#         133
+  C:0979H         LINE#         134
+  -------         ENDPROC       _DELAY_MS
+  -------         PROC          TIMER_INIT
+  C:09B6H         LINE#         136
+  C:09B6H         LINE#         137
+  C:09B6H         LINE#         138
+  C:09B9H         LINE#         139
+  C:09BBH         LINE#         141
+  C:09BDH         LINE#         142
+  C:09C0H         LINE#         143
+  C:09C3H         LINE#         146
+  -------         ENDPROC       TIMER_INIT
+  -------         PROC          TIMER0_INT
+  C:097AH         LINE#         148
+  C:097EH         LINE#         150
+  C:0980H         LINE#         151
+  C:0983H         LINE#         152
+  C:0986H         LINE#         153
+  C:0988H         LINE#         154
+  C:0993H         LINE#         155
+  C:0995H         LINE#         157
+  -------         ENDPROC       TIMER0_INT
+  -------         ENDMOD        LW9_4
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SDELAY?LW9_4
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_MS?LW9_4
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 014AH BYTE (16%) *
+******************************************************************************
+
+Program Size: data=88.3 xdata=0 code=474
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

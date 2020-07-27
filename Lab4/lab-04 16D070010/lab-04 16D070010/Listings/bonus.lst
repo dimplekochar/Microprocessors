@@ -1,0 +1,88 @@
+A51 MACRO ASSEMBLER  BONUS                                                                08/20/2018 15:08:03 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\bonus.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE bonus.asm SET(SMALL) DEBUG PRINT(.\Listings\bonus.lst) OBJECT(.\Objects
+                      \bonus.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020133            2     LJMP MAIN
+0100                   3     ORG 100H
+                       4     ;----------------------------------------
+                       5             
+0100                   6     sqrt: 
+0100 E550              7     MOV A, 50H
+0102 7E00              8     MOV R6, #0
+0104 7D00              9     MOV R5, #0
+0106                  10     loop:
+0106 0E               11     INC R6
+0107 0D               12     INC R5
+0108 9E               13     SUBB A, R6
+0109 4008             14     JC nosqrt
+010B 0E               15     INC R6
+010C B400F7           16     CJNE A, #0, loop
+010F 6012             17     JZ sqrtf
+0111 4000             18     JC nosqrt
+                      19     
+0113                  20     nosqrt:
+0113 E550             21     MOV A, 50H
+0115 33               22     RLC A
+0116 9297             23     MOV P1.7, C 
+0118 33               24     RLC A
+0119 9296             25     MOV P1.6, C
+011B 33               26     RLC A
+011C 9295             27     MOV P1.5, C
+011E 33               28     RLC A
+011F 9294             29     MOV P1.4, C
+0121 800F             30     SJMP ending
+                      31     
+0123                  32     sqrtf:
+0123 ED               33     MOV A, R5
+0124 13               34     RRC A
+0125 9294             35     MOV P1.4, C 
+0127 13               36     RRC A
+0128 9295             37     MOV P1.5, C
+012A 13               38     RRC A
+012B 9296             39     MOV P1.6, C
+012D 13               40     RRC A
+012E 9297             41     MOV P1.7, C
+0130 8000             42     SJMP ending
+                      43     
+0132                  44     ending:
+0132 22               45     RET
+                      46     
+                      47     ;----------------------------------------------------------------------------------------
+                      48     
+0133                  49     MAIN:
+                      50     
+0133 7550C8           51     MOV 50H, #200
+0136 120100           52     LCALL sqrt
+                      53     
+0139 80FE             54     STOP:SJMP STOP
+                      55     
+                      56     END
+A51 MACRO ASSEMBLER  BONUS                                                                08/20/2018 15:08:03 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ENDING . . . . . .  C ADDR   0132H   A   
+LOOP . . . . . . .  C ADDR   0106H   A   
+MAIN . . . . . . .  C ADDR   0133H   A   
+NOSQRT . . . . . .  C ADDR   0113H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+SQRT . . . . . . .  C ADDR   0100H   A   
+SQRTF. . . . . . .  C ADDR   0123H   A   
+STOP . . . . . . .  C ADDR   0139H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

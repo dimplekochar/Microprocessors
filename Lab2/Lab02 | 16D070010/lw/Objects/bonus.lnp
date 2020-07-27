@@ -1,0 +1,3 @@
+".\Objects\bonus.obj" 
+TO ".\Objects\bonus" 
+PRINT(".\Listings\bonus.m51") RAMSIZE(256) 

@@ -1,0 +1,71 @@
+A51 MACRO ASSEMBLER  LAB1_1                                                               07/30/2018 20:13:41 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lab1-1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab1-1.asm SET(SMALL) DEBUG PRINT(.\Listings\lab1-1.lst) OBJECT(.\Objec
+                      ts\lab1-1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     Org 0h
+0000 020100            2     ljmp main
+0100                   3     Org 100h
+                       4     
+0100                   5     main:
+0100 7561BE            6     MOV 61H, #0BEH
+0103 7560FE            7     MOV 60H, #0FEH
+0106 7571FF            8     MOV 71H, #0FFH
+0109 7570FF            9     MOV 70H, #0FFH
+010C E561             10     MOV A, 61H
+010E 2571             11     ADD A, 71H
+0110 F564             12     MOV 64H, A
+0112 E4               13     CLR A
+0113 E560             14     MOV A, 60H
+0115 3570             15     ADDC A, 70H
+0117 F563             16     MOV 63H, A
+0119 E4               17     CLR A
+011A 92E0             18     MOV ACC.0, C
+011C F580             19     MOV 80H, A
+011E E4               20     CLR A
+011F C3               21     CLR C
+0120 E560             22     MOV A, 60H
+0122 2480             23     ADD A, #128
+0124 E4               24     CLR A
+0125 92E0             25     MOV ACC.0, C
+0127 F581             26     MOV 81H, A
+0129 E4               27     CLR A
+012A C3               28     CLR C
+012B E570             29     MOV A, 70H
+012D 2480             30     ADD A, #128
+012F E4               31     CLR A
+0130 92E0             32     MOV ACC.0, C
+0132 F582             33     MOV 82H, A
+0134 E4               34     CLR A
+0135 C3               35     CLR C
+0136 E580             36     MOV A, 80H
+0138 2581             37     ADD A, 81H
+013A 2582             38     ADD A, 82H
+013C 13               39     RRC A
+013D E4               40     CLR A
+013E 92E0             41     MOV ACC.0, C
+0140 F562             42     MOV 62H, A
+0142 80FE             43     HERE:SJMP HERE
+                      44     END
+A51 MACRO ASSEMBLER  LAB1_1                                                               07/30/2018 20:13:41 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+HERE . . . . . . .  C ADDR   0142H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

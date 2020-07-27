@@ -1,0 +1,44 @@
+A51 MACRO ASSEMBLER  HW1                                                                  07/30/2018 20:16:00 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\hw1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE hw1.asm SET(SMALL) DEBUG PRINT(.\Listings\hw1.lst) OBJECT(.\Objects\hw1
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     Org 0h
+0000 020100            2     ljmp main
+0100                   3     Org 100h
+                       4     
+0100                   5     main:
+0100 75509F            6     MOV 50H, #9FH
+0103 75609F            7     MOV 60H, #9FH
+0106 E550              8     MOV A, 50H
+0108 2560              9     ADD A, 60H
+                      10     
+010A F570             11     MOV 70H,A
+010C E4               12     CLR A
+010D 92E0             13     MOV ACC.0, C
+010F F571             14     MOV 71H, A
+                      15     
+0111 80FE             16     HERE:SJMP HERE
+                      17     END
+A51 MACRO ASSEMBLER  HW1                                                                  07/30/2018 20:16:00 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+HERE . . . . . . .  C ADDR   0111H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

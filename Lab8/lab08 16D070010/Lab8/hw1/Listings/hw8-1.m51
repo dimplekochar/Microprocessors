@@ -1,0 +1,219 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/14/2018  23:39:59  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\hw8-1.obj TO .\Objects\hw8-1 PRINT (.\Listings\hw8-1.m51) R
+>> AMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\hw8-1.obj (HW8_1)
+
+
+LINK MAP OF MODULE:  .\Objects\hw8-1 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0003H     UNIT         ?DT?HW8_1
+            IDATA   000BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0020H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+                    0026H     07DAH                  *** GAP ***
+            CODE    0800H     0029H     UNIT         ?PR?ISR_SERIAL?HW8_1
+            CODE    0829H     0021H     UNIT         ?PR?_DELAY_MS?HW8_1
+            CODE    084AH     001BH     UNIT         ?PR?MAIN?HW8_1
+            CODE    0865H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0871H     000AH     UNIT         ?PR?INIT_SERIAL?HW8_1
+            CODE    087BH     0007H     UNIT         ?PR?TIMER_INIT?HW8_1
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\hw8-1 (?C_STARTUP)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?HW8_1
+
+?PR?MAIN?HW8_1
+  +--> ?PR?INIT_SERIAL?HW8_1
+  +--> ?PR?TIMER_INIT?HW8_1
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\hw8-1 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2018  23:39:59  PAGE 2
+
+
+  -------         MODULE        ?C_STARTUP
+  C:0865H         SEGMENT       ?C_C51STARTUP
+  I:000BH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0868H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0865H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0865H         LINE#         133
+  C:0867H         LINE#         134
+  C:0868H         LINE#         135
+  C:0869H         LINE#         136
+  C:086BH         LINE#         185
+  C:086EH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        HW8_1
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IEN0
+  D:00B8H         PUBLIC        IPL0
+  B:00A8H.4       PUBLIC        ES
+  C:0871H         PUBLIC        init_serial
+  B:0098H.0       PUBLIC        RI
+  B:00D0H.0       PUBLIC        parity
+  B:0098H.1       PUBLIC        TI
+  D:00D8H         PUBLIC        CCON
+  C:084AH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0008H         PUBLIC        input
+  C:0800H         PUBLIC        ISR_Serial
+  D:0098H         PUBLIC        SCON
+  D:0009H         PUBLIC        output
+  D:0089H         PUBLIC        TMOD
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2018  23:39:59  PAGE 3
+
+
+  D:0088H         PUBLIC        TCON
+  D:000AH         PUBLIC        temp
+  D:00E0H         PUBLIC        ACC
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  B:0098H.3       PUBLIC        TB8
+  C:0829H         PUBLIC        _delay_ms
+  B:0090H.4       PUBLIC        LED
+  D:00F8H         PUBLIC        UEPINT
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  C:087BH         PUBLIC        Timer_Init
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          ISR_SERIAL
+  C:0800H         LINE#         16
+  C:0804H         LINE#         20
+  C:0807H         LINE#         21
+  C:080AH         LINE#         22
+  C:080AH         LINE#         23
+  C:080DH         LINE#         24
+  C:080FH         LINE#         25
+  C:080FH         LINE#         26
+  C:0812H         LINE#         27
+  C:0815H         LINE#         28
+  C:0817H         LINE#         29
+  C:0817H         LINE#         30
+  C:081BH         LINE#         31
+  C:081DH         LINE#         33
+  C:081FH         LINE#         34
+  C:0821H         LINE#         35
+  C:0821H         LINE#         36
+  C:0824H         LINE#         38
+  -------         ENDPROC       ISR_SERIAL
+  -------         PROC          TIMER_INIT
+  C:087BH         LINE#         40
+  C:087BH         LINE#         41
+  C:087BH         LINE#         42
+  C:087EH         LINE#         43
+  C:0881H         LINE#         44
+  -------         ENDPROC       TIMER_INIT
+  -------         PROC          INIT_SERIAL
+  C:0871H         LINE#         46
+  C:0871H         LINE#         47
+  C:0871H         LINE#         49
+  C:0873H         LINE#         50
+  C:0875H         LINE#         51
+  C:0877H         LINE#         52
+  C:087AH         LINE#         53
+  -------         ENDPROC       INIT_SERIAL
+  -------         PROC          _DELAY_MS
+  D:0006H         SYMBOL        delay
+  -------         DO            
+  D:0004H         SYMBOL        d
+  -------         ENDDO         
+  C:0829H         LINE#         55
+  C:0829H         LINE#         56
+  C:0829H         LINE#         57
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2018  23:39:59  PAGE 4
+
+
+  C:0829H         LINE#         58
+  C:0834H         LINE#         59
+  C:0834H         LINE#         60
+  C:0842H         LINE#         61
+  C:0847H         LINE#         62
+  C:0849H         LINE#         63
+  -------         ENDPROC       _DELAY_MS
+  -------         PROC          MAIN
+  C:084AH         LINE#         65
+  C:084AH         LINE#         66
+  C:084AH         LINE#         67
+  C:084DH         LINE#         68
+  C:0850H         LINE#         69
+  C:0852H         LINE#         70
+  C:0854H         LINE#         71
+  C:0856H         LINE#         72
+  C:0858H         LINE#         74
+  C:085BH         LINE#         75
+  C:085DH         LINE#         76
+  C:085DH         LINE#         77
+  C:0861H         LINE#         78
+  C:0863H         LINE#         79
+  C:0863H         LINE#         80
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        HW8_1
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_MS?HW8_1
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0088H BYTE ( 6%) *
+******************************************************************************
+
+Program Size: data=12.0 xdata=0 code=136
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

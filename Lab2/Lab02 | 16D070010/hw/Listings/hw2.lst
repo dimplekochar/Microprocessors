@@ -1,0 +1,76 @@
+A51 MACRO ASSEMBLER  HW2                                                                  08/06/2018 07:54:47 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\hw2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE hw2.asm SET(SMALL) DEBUG PRINT(.\Listings\hw2.lst) OBJECT(.\Objects\hw2
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG 00H
+0000 02006C            2             LJMP MAIN
+                       3     
+                       4     ;----------------------------------------------------------------
+0050                   5             ORG 50H
+                       6     
+0050                   7     DELAY:
+0050 A84F              8             MOV R0, 4FH
+0052 D297              9             SETB P1.7
+0054 115D             10             ACALL LOOP
+0056 A84F             11             MOV R0, 4FH
+0058 C297             12             CLR P1.7
+005A 115D             13             ACALL LOOP
+005C 22               14             RET
+                      15     
+005D                  16     LOOP:                   ;For running the loop D/2 times
+005D 7B0A             17             MOV R3, #10             
+005F                  18             HALFSEC:                ;For making 50ms*10=0.5sec
+005F 7AC8             19             MOV R2,#200     ;For delay of 50ms, given in labsheet
+0061                  20             BACK1:
+0061 79FF             21             MOV R1,#0FFH
+0063                  22             BACK :
+0063 D9FE             23             DJNZ R1, BACK
+0065 DAFA             24             DJNZ R2, BACK1
+0067 DBF6             25             DJNZ R3, HALFSEC
+0069 D8F2             26             DJNZ R0, LOOP
+006B 22               27             RET
+                      28             
+                      29         
+                      30     
+                      31     ;----------------------------------------------------------------------
+                      32     
+006C                  33     MAIN:
+006C 754F06           34                     MOV 4FH, #6             ;D=6sec
+006F C297             35                     CLR P1.7        ;MAKE P1.7 OUTPUT PORT
+                      36                     
+0071 1150             37                     ACALL DELAY                     ;Blink led once
+0073 80FE             38                     HERE: SJMP HERE
+                      39                     
+                      40     ;HERE:  ACALL DELAY             ;To blink infinite times.       
+                      41     ;               SJMP HERE
+                      42                     END
+                             
+                             ;--------------------------------------------------------------------------
+A51 MACRO ASSEMBLER  HW2                                                                  08/06/2018 07:54:47 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BACK . . . . . . .  C ADDR   0063H   A   
+BACK1. . . . . . .  C ADDR   0061H   A   
+DELAY. . . . . . .  C ADDR   0050H   A   
+HALFSEC. . . . . .  C ADDR   005FH   A   
+HERE . . . . . . .  C ADDR   0073H   A   
+LOOP . . . . . . .  C ADDR   005DH   A   
+MAIN . . . . . . .  C ADDR   006CH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

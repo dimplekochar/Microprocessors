@@ -1,0 +1,112 @@
+A51 MACRO ASSEMBLER  BIN2ASCII                                                            08/19/2018 17:17:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\bin2ascii.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Z:\Users\praveshkochar\Downloads\bin2ascii.asm SET(SMALL) DEBUG PRINT(.
+                      \Listings\bin2ascii.lst) OBJECT(.\Objects\bin2ascii.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 02009B            2     LJMP MAIN
+0050                   3     ORG 50H
+                       4             
+0050                   5     bin2ascii: 
+                       6     USING 0
+0050 C0D0              7     PUSH PSW
+0052 C000              8     PUSH AR0
+0054 C001              9     PUSH AR1
+0056 C002             10     PUSH AR2
+0058 A851             11     MOV R0,51H
+005A A952             12     MOV R1,52H
+005C AA50             13     MOV R2,50H
+                      14     
+005E E6               15     LOOP: MOV A,@R0
+005F 54F0             16               ANL A,#0F0H
+0061 C4               17               SWAP A
+0062 F7               18           MOV @R1,A
+0063 940A             19               SUBB A,#0AH
+0065 4002             20               JC NEXT1
+0067 5007             21               JNC NEXT2
+                      22     
+0069 E7               23     NEXT1: MOV A, @R1
+006A 2430             24                ADD A, #30H
+006C F7               25                MOV @R1, A
+006D 09               26                INC R1
+006E 8007             27                SJMP PART2
+                      28     
+0070 E7               29     NEXT2: MOV A, @R1
+0071 2437             30                ADD A, #37H
+0073 F7               31                MOV @R1, A
+0074 09               32                INC R1
+0075 8000             33                SJMP PART2
+                      34     
+0077 E6               35     PART2: MOV A,@R0
+0078 540F             36               ANL A,#0FH
+007A F7               37           MOV @R1,A
+007B 940A             38               SUBB A,#0AH
+007D 4002             39               JC NEXT3
+007F 5007             40               JNC NEXT4
+                      41               
+0081 E7               42     NEXT3: MOV A, @R1
+0082 2430             43                ADD A, #30H
+0084 F7               44                MOV @R1, A
+0085 09               45                INC R1
+0086 8007             46                SJMP ENDING
+                      47     
+0088 E7               48     NEXT4: MOV A, @R1
+0089 2437             49                ADD A, #37H
+008B F7               50                MOV @R1, A
+008C 09               51                INC R1
+008D 8000             52                SJMP ENDING
+                      53               
+008F 08               54     ENDING: INC R0
+0090 DACC             55                     DJNZ R2, LOOP
+0092 D002             56                     POP AR2
+0094 D001             57                     POp AR1
+A51 MACRO ASSEMBLER  BIN2ASCII                                                            08/19/2018 17:17:49 PAGE     2
+
+0096 D000             58                     POP AR0
+0098 D0D0             59                     POP PSW
+009A 22               60                     RET
+                      61     
+009B 755003           62     MAIN: MOV 50H,#03H
+009E 755160           63               MOV 51H,#60H
+00A1 755240           64               MOV 52H,#40H
+00A4 7560E3           65               MOV 60H,#0E3H
+00A7 75613E           66               MOV 61H,#03EH
+00AA 7562E3           67               MOV 62H,#0E3H
+00AD 120050           68               LCALL bin2ascii
+                      69     
+00B0 80FE             70     STOP: SJMP STOP
+                      71     END  
+                                       
+A51 MACRO ASSEMBLER  BIN2ASCII                                                            08/19/2018 17:17:49 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+BIN2ASCII. . . . .  C ADDR   0050H   A   
+ENDING . . . . . .  C ADDR   008FH   A   
+LOOP . . . . . . .  C ADDR   005EH   A   
+MAIN . . . . . . .  C ADDR   009BH   A   
+NEXT1. . . . . . .  C ADDR   0069H   A   
+NEXT2. . . . . . .  C ADDR   0070H   A   
+NEXT3. . . . . . .  C ADDR   0081H   A   
+NEXT4. . . . . . .  C ADDR   0088H   A   
+PART2. . . . . . .  C ADDR   0077H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+STOP . . . . . . .  C ADDR   00B0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

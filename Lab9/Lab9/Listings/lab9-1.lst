@@ -1,0 +1,158 @@
+C51 COMPILER V9.59.0.0   LAB9_1                                                            10/22/2018 14:25:48 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE LAB9_1
+OBJECT MODULE PLACED IN .\Objects\lab9-1.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe lab9-1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\la
+                    -b9-1.lst) TABS(2) OBJECT(.\Objects\lab9-1.obj)
+
+line level    source
+
+   1          /**
+   2           SPI HOMEWORK2 , LABWORK2 (SAME PROGRAM)
+   3           */
+   4          
+   5          /* @section  I N C L U D E S */
+   6          #include "at89c5131.h"
+   7          #include "stdio.h"
+   8          #define sample 1
+   9          void SPI_Init();
+  10          void sdelay(int delay);
+  11          void delay_ms(int delay);
+  12          sbit CS_BAR = P3^4;                 // Chip Select for the ADC
+  13          sbit FS=P3^5;
+  14          sbit ONULL = P1^0;
+  15          bit transmit_completed= 0;              // To check if spi data transmit is complete
+  16          bit offset_null = 0;                // Check if offset nulling is enabled
+  17          bit roundoff = 0;
+  18          
+  19          unsigned long adcVal=0, voltage= 0 , sum = 0,tempadcVal=0 ,temp_low,temp_high,try0=0;
+  20          unsigned int avgVal=0, initVal=0, adcValue = 0 , temp=0 ;
+  21          
+  22          unsigned char serial_data;
+  23          unsigned char data_save_high;
+  24          unsigned char data_save_low;
+  25          
+  26          /**
+  27          
+  28           * FUNCTION_INPUTS:  P1.5(MISO) serial input  
+  29           * FUNCTION_OUTPUTS: P1.7(MOSI) serial output
+  30           *                   P1.4(SSbar)
+  31                               P1.6(SCK)
+  32           */
+  33           
+  34          void main(void)
+  35          {
+  36   1        FS=1;
+  37   1        CS_BAR = 1;
+  38   1        SPI_Init();
+  39   1        while(1)
+  40   1        { 
+  41   2          CS_BAR = 0;                               // falling edge of CS bar
+  42   2          FS=0;
+  43   2          SPDAT= 0x04;                      // first 4 bits will be address of the channel
+  44   2          while(!transmit_completed);               // wait for the transmit complete flag    
+  45   2          transmit_completed = 0; 
+  46   2          delay_ms(1000);
+  47   2          SPDAT= 0x00;                      // first 4 bits will be address of the channel
+  48   2          while(!transmit_completed);               // wait for the transmit complete flag    
+  49   2          transmit_completed = 0; 
+  50   2          delay_ms(1000);
+  51   2          FS=1; 
+  52   2          CS_BAR = 1; 
+  53   2            
+  54   2          
+C51 COMPILER V9.59.0.0   LAB9_1                                                            10/22/2018 14:25:48 PAGE 2   
+
+  55   2        }
+  56   1      }
+  57          /**
+  58           * FUNCTION_PURPOSE:interrupt
+  59           * FUNCTION_INPUTS: void
+  60           * FUNCTION_OUTPUTS: transmit_complete is software transfert flag
+  61           */
+  62          void it_SPI(void) interrupt 9 /* interrupt address is 0x004B, (Address -3)/8 = interrupt no.*/
+  63          {
+  64   1        switch  ( SPSTA )         /* read and clear spi status register */
+  65   1        {
+  66   2          case 0x80:  
+  67   2            serial_data=SPDAT;   /* read receive data */
+  68   2            transmit_completed=1;/* set software flag */
+  69   2          break;
+  70   2      
+  71   2          case 0x10:
+  72   2            
+  73   2          break;
+  74   2        
+  75   2          case 0x40:
+  76   2          break;
+  77   2        }
+  78   1      }
+  79          
+  80          
+  81          void SPI_Init()
+  82          {
+  83   1        CS_BAR = 1;                     // DISABLE ADC SLAVE SELECT-CS 
+  84   1        FS=1;
+  85   1        SPCON |= 0x20;                  // CPHA=1; transmit mode example 
+  86   1        SPCON |= 0x01;                  // CPHA=1; transmit mode example 
+  87   1        SPCON |= 0x10;                  // CPHA=1; transmit mode example 
+  88   1        SPCON &= ~0x08;                 // CPHA=1; transmit mode example 
+  89   1        SPCON |= 0x04;                  // CPHA=1; transmit mode example 
+  90   1        IEN1 |= 0x04;                   // enable spi interrupt 
+  91   1        EA=1;                           // enable interrupts 
+  92   1        SPCON |= 0x40;                  // CPHA=1; transmit mode example 
+  93   1      //  SPCON |= 0x40;                  // run spi;ENABLE SPI INTERFACE SPEN= 1 
+  94   1      //  IPH0 |=0x10;
+  95   1      //  IPL0 |=0x10;
+  96   1      }
+  97          
+  98          
+  99          
+ 100          
+ 101          
+ 102          /**
+ 103           * FUNCTION_PURPOSE: A delay of 15us for a 24 MHz crystal
+ 104           * FUNCTION_INPUTS: void
+ 105           * FUNCTION_OUTPUTS: none
+ 106           */
+ 107          void sdelay(int delay)
+ 108          {
+ 109   1        char d=0;
+ 110   1        while(delay>0)
+ 111   1        {
+ 112   2          for(d=0;d<5;d++);
+ 113   2          delay--;
+ 114   2        }
+ 115   1      }
+ 116          
+C51 COMPILER V9.59.0.0   LAB9_1                                                            10/22/2018 14:25:48 PAGE 3   
+
+ 117          /**
+ 118           * FUNCTION_PURPOSE: A delay of around 1000us for a 24MHz crystel
+ 119           * FUNCTION_INPUTS: void
+ 120           * FUNCTION_OUTPUTS: none
+ 121           */
+ 122          void delay_ms(int delay)
+ 123          {
+ 124   1        int d=0;
+ 125   1        while(delay>0)
+ 126   1        {
+ 127   2          for(d=0;d<382;d++);
+ 128   2          delay--;
+ 129   2        }
+ 130   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    171    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     39    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,103 @@
+A51 MACRO ASSEMBLER  LW3_1                                                                08/19/2018 02:58:33 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lw3-1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lw3-1.asm SET(SMALL) DEBUG PRINT(.\Listings\lw3-1.lst) OBJECT(.\Objects
+                      \lw3-1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020075            2     LJMP MAIN
+0050                   3     ORG 50H
+                       4     ;----------------------------------------
+                       5             
+0050                   6     DELAY4: 
+                       7     USING 0
+0050 C0D0              8     PUSH PSW
+0052 C003              9     PUSH AR3
+0054 C004             10     PUSH AR4
+0056 C005             11     PUSH AR5
+0058 C006             12     PUSH AR6
+005A AE50             13     MOV R6, 50H
+005C 7B05             14     dela4: MOV R3,#5
+005E 7CC8             15     del4:MOV R4,#200 
+0060 7DFF             16                BACK44: MOV R5,#0FFH 
+0062 DDFE             17                           BACK4: DJNZ R5, BACK4 
+0064 DCFA             18                                     DJNZ R4, BACK44
+0066 DBF6             19                                     DJNZ R3,del4
+0068 DEF2             20                                             DJNZ R6, dela4
+006A D006             21     POP AR6
+006C D005             22     POP AR5
+006E D004             23     POP AR4
+0070 D003             24     POP AR3
+0072 D0D0             25     POP PSW
+0074 22               26     RET
+                      27     
+                      28     ;----------------------------------------------------------------------------------------
+                      29     
+0075                  30     MAIN:
+                      31     
+0075                  32     Loop:
+0075 7400             33     MOV A, #0H
+                      34     
+0077 A293             35     MOV C, P1.3
+0079 33               36     RLC A
+007A A292             37     MOV C, P1.2
+007C 33               38     RLC A
+007D A291             39     MOV C, P1.1
+007F 33               40     RLC A
+0080 A290             41     MOV C, P1.0
+0082 33               42     RLC A
+0083 F550             43     MOV 50H, A
+                      44     
+0085 120050           45     LCALL DELAY4
+0088 B295             46     CPL P1.5
+008A 120050           47     LCALL DELAY4
+008D B295             48     CPL P1.5
+008F B296             49     CPL P1.6
+0091 120050           50     LCALL DELAY4
+0094 B295             51     CPL P1.5
+0096 120050           52     LCALL DELAY4
+0099 B295             53     CPL P1.5
+009B B296             54     CPL P1.6
+009D B297             55     CPL P1.7
+009F 80D4             56     SJMP Loop
+                      57     
+A51 MACRO ASSEMBLER  LW3_1                                                                08/19/2018 02:58:33 PAGE     2
+
+                      58     
+                      59     
+                      60     
+00A1 80FE             61     STOP:SJMP STOP
+                      62     
+                      63     END
+A51 MACRO ASSEMBLER  LW3_1                                                                08/19/2018 02:58:33 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR3. . . . . . . .  D ADDR   0003H   A   
+AR4. . . . . . . .  D ADDR   0004H   A   
+AR5. . . . . . . .  D ADDR   0005H   A   
+AR6. . . . . . . .  D ADDR   0006H   A   
+BACK4. . . . . . .  C ADDR   0062H   A   
+BACK44 . . . . . .  C ADDR   0060H   A   
+DEL4 . . . . . . .  C ADDR   005EH   A   
+DELA4. . . . . . .  C ADDR   005CH   A   
+DELAY4 . . . . . .  C ADDR   0050H   A   
+LOOP . . . . . . .  C ADDR   0075H   A   
+MAIN . . . . . . .  C ADDR   0075H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+STOP . . . . . . .  C ADDR   00A1H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

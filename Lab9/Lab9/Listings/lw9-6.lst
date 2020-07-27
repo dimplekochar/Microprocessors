@@ -1,0 +1,339 @@
+C51 COMPILER V9.59.0.0   LW9_6                                                             10/22/2018 15:18:55 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE LW9_6
+OBJECT MODULE PLACED IN .\Objects\lw9-6.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe lw9-6.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\lw9
+                    --6.lst) TABS(2) OBJECT(.\Objects\lw9-6.obj)
+
+line level    source
+
+   1          /**
+   2           SPI HOMEWORK2 , LABWORK2 (SAME PROGRAM)
+   3           */
+   4          
+   5          /* @section  I N C L U D E S */
+   6          #include "at89c5131.h"
+   7          #include "stdio.h"
+   8          #define sample 1
+   9          void SPI_Init();
+  10          void sdelay(int delay);
+  11          void delay_ms(int delay);
+  12          void delay_mms(int delay);
+  13          sbit CS_BAR = P3^4;                 // Chip Select for the ADC
+  14          sbit FS=P3^5;
+  15          sbit ONULL = P1^0;
+  16          sbit led=P1^4;
+  17          bit transmit_completed= 0;              // To check if spi data transmit is complete
+  18          bit offset_null = 0;                // Check if offset nulling is enabled
+  19          bit roundoff = 0;
+  20          unsigned char x, i=0x00, j=0xff, xx;
+  21          unsigned long adcVal=0, voltage= 0 , sum = 0,tempadcVal=0 ,temp_low,temp_high,try0=0;
+  22          unsigned int avgVal=0, initVal=0, adcValue = 0 , temp=0 ;
+  23          int l=0, p;
+  24          unsigned char serial_data;
+  25          unsigned char data_save_high;
+  26          unsigned char data_save_low;
+  27          void timer_init();
+  28          unsigned char serial_data;
+  29          sbit C0 = P1^7; 
+  30          char high=239,low=190;
+  31          int m=0; 
+  32          double z;             
+  33          int y=40;
+  34          unsigned char count=0, ii=2;
+  35          char test [] = {0xEF,0xBE,  0xF1,0x8C,  0xF2,0xFE,  0xF3,0xCE,
+  36                          0xF5,0x29,  0xF6,0x3F,  0xF7,0x50,  0xF7,0xDF,
+  37                          0xF7,0xDF,  0xF7,0x50,  0xF6,0x3F,  0xF5,0x29,
+  38                          0xF3,0xCE,  0xF2,0xFE,  0xF1,0x8C,  0xEF,0xBE 
+  39                          
+  40          };
+  41          
+  42          
+  43          /**
+  44          
+  45           * FUNCTION_INPUTS:  P1.5(MISO) serial input  
+  46           * FUNCTION_OUTPUTS: P1.7(MOSI) serial output
+  47           *                   P1.4(SSbar)
+  48                               P1.6(SCK)
+  49           */
+  50           
+  51          void main(void)
+  52          {
+  53   1        FS=1;
+  54   1        CS_BAR = 1;
+C51 COMPILER V9.59.0.0   LW9_6                                                             10/22/2018 15:18:55 PAGE 2   
+
+  55   1        SPI_Init();
+  56   1        timer_init();
+  57   1        TR0=1;
+  58   1        TR1=1;
+  59   1        
+  60   1        while(1){
+  61   2          i=0x00;
+  62   2        while(i<0xff){
+  63   3          for (z=0; z<3; z++)
+  64   3          {CS_BAR = 0;                              // falling edge of CS bar
+  65   4          FS=0;
+  66   4            if (m==0){
+  67   5              xx=i;
+  68   5            x=(i>>4);
+  69   5          SPDAT=x;                // first 4 bits will be address of the channel
+  70   5          while(!transmit_completed);               // wait for the transmit complete flag    
+  71   5          transmit_completed = 0; 
+  72   5            x=(i<<4);
+  73   5      SPDAT=x;  
+  74   5          while(!transmit_completed);               // wait for the transmit complete flag    
+  75   5          transmit_completed = 0; 
+  76   5          FS=1; 
+  77   5          CS_BAR = 1; 
+  78   5          delay_mms(2);}
+  79   4          else if (m==1){
+  80   5              xx=0x00;
+  81   5          SPDAT=0x00;               // first 4 bits will be address of the channel
+  82   5          while(!transmit_completed);               // wait for the transmit complete flag    
+  83   5          transmit_completed = 0; 
+  84   5      SPDAT=0x00; 
+  85   5          while(!transmit_completed);               // wait for the transmit complete flag    
+  86   5          transmit_completed = 0; 
+  87   5          FS=1; 
+  88   5          CS_BAR = 1; 
+  89   5          delay_mms(2);}
+  90   4          
+  91   4          }
+  92   3          i++;
+  93   3        }
+  94   2      
+  95   2      i=0x00;
+  96   2          
+  97   2        while(i<0xff){
+  98   3          for (z=0; z<3; z++)
+  99   3          {CS_BAR = 0;                              // falling edge of CS bar
+ 100   4          FS=0;
+ 101   4            if (m==0){
+ 102   5          SPDAT=0x0f;               // first 4 bits will be address of the channel
+ 103   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 104   5          transmit_completed = 0; 
+ 105   5      SPDAT=0xff; 
+ 106   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 107   5          transmit_completed = 0; 
+ 108   5          FS=1; 
+ 109   5          CS_BAR = 1; 
+ 110   5          delay_mms(2);}
+ 111   4          else if (m==1){
+ 112   5          SPDAT=0x00;               // first 4 bits will be address of the channel
+ 113   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 114   5          transmit_completed = 0; 
+ 115   5      SPDAT=0x00; 
+ 116   5          while(!transmit_completed);               // wait for the transmit complete flag    
+C51 COMPILER V9.59.0.0   LW9_6                                                             10/22/2018 15:18:55 PAGE 3   
+
+ 117   5          transmit_completed = 0; 
+ 118   5          FS=1; 
+ 119   5          CS_BAR = 1; 
+ 120   5          delay_mms(2);}
+ 121   4          
+ 122   4          }
+ 123   3          i++;
+ 124   3        }
+ 125   2        
+ 126   2        
+ 127   2      i=0xff;
+ 128   2        while(i>0){
+ 129   3          for (z=0; z<10; z++)
+ 130   3          {CS_BAR = 0;                              // falling edge of CS bar
+ 131   4          FS=0;
+ 132   4            if (m==0){
+ 133   5              xx=i;
+ 134   5            x=(i>>4);
+ 135   5          SPDAT=x;                // first 4 bits will be address of the channel
+ 136   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 137   5          transmit_completed = 0; 
+ 138   5            x=(i<<4);
+ 139   5      SPDAT=x;  
+ 140   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 141   5          transmit_completed = 0; 
+ 142   5          FS=1; 
+ 143   5          CS_BAR = 1; 
+ 144   5          delay_mms(2);}
+ 145   4          else if (m==1){
+ 146   5              xx=0x00;
+ 147   5          SPDAT=0x00;               // first 4 bits will be address of the channel
+ 148   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 149   5          transmit_completed = 0; 
+ 150   5      SPDAT=0x00; 
+ 151   5          while(!transmit_completed);               // wait for the transmit complete flag    
+ 152   5          transmit_completed = 0; 
+ 153   5          FS=1; 
+ 154   5          CS_BAR = 1; 
+ 155   5          delay_mms(2);}
+ 156   4          
+ 157   4          }
+ 158   3          i--;
+ 159   3        }
+ 160   2          
+ 161   2        }
+ 162   1      }
+ 163          /**
+ 164           * FUNCTION_PURPOSE:interrupt
+ 165           * FUNCTION_INPUTS: void
+ 166           * FUNCTION_OUTPUTS: transmit_complete is software transfert flag
+ 167           */
+ 168          void it_SPI(void) interrupt 9 /* interrupt address is 0x004B, (Address -3)/8 = interrupt no.*/
+ 169          {
+ 170   1        switch  ( SPSTA )         /* read and clear spi status register */
+ 171   1        {
+ 172   2          case 0x80:  
+ 173   2            serial_data=SPDAT;   /* read receive data */
+ 174   2            transmit_completed=1;/* set software flag */
+ 175   2          break;
+ 176   2      
+ 177   2          case 0x10:
+ 178   2            
+C51 COMPILER V9.59.0.0   LW9_6                                                             10/22/2018 15:18:55 PAGE 4   
+
+ 179   2          break;
+ 180   2        
+ 181   2          case 0x40:
+ 182   2          break;
+ 183   2        }
+ 184   1      }
+ 185          
+ 186          
+ 187          void SPI_Init()
+ 188          {
+ 189   1        CS_BAR = 1;                     // DISABLE ADC SLAVE SELECT-CS 
+ 190   1        FS=1;
+ 191   1        SPCON |= 0x75;                  // CPHA=1; transmit mode example 
+ 192   1      //  SPCON |= 0x01;                  // CPHA=1; transmit mode example 
+ 193   1      //  SPCON |= 0x10;                  // CPHA=1; transmit mode example 
+ 194   1      //  SPCON &= ~0x08;                 // CPHA=1; transmit mode example 
+ 195   1      //  SPCON |= 0x04;                  // CPHA=1; transmit mode example 
+ 196   1        IEN1 |= 0x04;                   // enable spi interrupt 
+ 197   1        EA=1;                           // enable interrupts 
+ 198   1      //  SPCON |= 0x40;                  // CPHA=1; transmit mode example 
+ 199   1      //  SPCON |= 0x40;                  // run spi;ENABLE SPI INTERFACE SPEN= 1 
+ 200   1      //  IPH0 |=0x10;
+ 201   1      //  IPL0 |=0x10;
+ 202   1      }
+ 203          
+ 204          
+ 205          
+ 206          
+ 207          
+ 208          /**
+ 209           * FUNCTION_PURPOSE: A delay of 15us for a 24 MHz crystal
+ 210           * FUNCTION_INPUTS: void
+ 211           * FUNCTION_OUTPUTS: none
+ 212           */
+ 213          void sdelay(int delay)
+ 214          {
+ 215   1        char d=0;
+ 216   1        while(delay>0)
+ 217   1        {
+ 218   2          for(d=0;d<5;d++);
+ 219   2          delay--;
+ 220   2        }
+ 221   1      }
+ 222          
+ 223          /**
+ 224           * FUNCTION_PURPOSE: A delay of around 1000us for a 24MHz crystel
+ 225           * FUNCTION_INPUTS: void
+ 226           * FUNCTION_OUTPUTS: none
+ 227           */
+ 228          void delay_ms(int delay)
+ 229          {
+ 230   1        int d=0;
+ 231   1        while(delay>0)
+ 232   1        {
+ 233   2          for(d=0;d<382;d++);
+ 234   2          delay--;
+ 235   2        }
+ 236   1      }
+ 237          
+ 238          void delay_mms(int delay)
+ 239          {
+ 240   1        int d=0;
+C51 COMPILER V9.59.0.0   LW9_6                                                             10/22/2018 15:18:55 PAGE 5   
+
+ 241   1        while(delay>0)
+ 242   1        {
+ 243   2          for(d=0;d<4;d++);
+ 244   2          delay--;
+ 245   2        }
+ 246   1      }
+ 247          
+ 248          void timer_init()
+ 249          {
+ 250   1       TMOD=0x11;   
+ 251   1       TL1 =190;  
+ 252   1       TH1 =239;    
+ 253   1       TL0 =0x61;     
+ 254   1       TH0 =0x3C;
+ 255   1        EA=1;
+ 256   1        ET0=1;
+ 257   1        ET1=1;
+ 258   1        TR0=1;
+ 259   1        //TR1=1;
+ 260   1        
+ 261   1      } 
+ 262          
+ 263          
+ 264          void TIMER1_ISR (void) interrupt 3
+ 265          {
+ 266   1      
+ 267   1        TR1=0;
+ 268   1        TL1 = low ;
+ 269   1        TH1 = high;
+ 270   1      //led2=~led2;
+ 271   1        TR1=1;
+ 272   1        m=1-m;
+ 273   1        led=~led;
+ 274   1      }
+ 275          
+ 276          void TIMER0_ISR (void) interrupt 1
+ 277          
+ 278          {
+ 279   1        TR0=0;
+ 280   1        TL0 =0x61;
+ 281   1        TH0 =0x3C;
+ 282   1        y--;
+ 283   1        if(y==0)
+ 284   1        {
+ 285   2            if(ii==32)
+ 286   2          {
+ 287   3            TR0=0;
+ 288   3            TR1=0;
+ 289   3          }
+ 290   2          else
+ 291   2          {
+ 292   3        //  led1=~led1;
+ 293   3          high= test[ii];
+ 294   3          low= test[ii+1];
+ 295   3        ii=ii+2;
+ 296   3          y=40;
+ 297   3        TR1=1;
+ 298   3          }
+ 299   2        }
+ 300   1        
+ 301   1        TR0=1;
+ 302   1      
+C51 COMPILER V9.59.0.0   LW9_6                                                             10/22/2018 15:18:55 PAGE 6   
+
+ 303   1        
+ 304   1      }
+ 305          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    727    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     91    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

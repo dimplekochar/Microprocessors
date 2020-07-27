@@ -1,0 +1,75 @@
+A51 MACRO ASSEMBLER  LAB1_3                                                               07/31/2018 13:18:43 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lab1-3.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab1-3.asm SET(SMALL) DEBUG PRINT(.\Listings\lab1-3.lst) OBJECT(.\Objec
+                      ts\lab1-3.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     Org 0h
+0000 020100            2     ljmp main
+0100                   3     Org 100h
+                       4     
+0100                   5     main:
+0100 7B04              6     MOV R3, #4
+0102 7C05              7     MOV R4, #5
+0104 7560FA            8     MOV 60H, #0FAH
+0107 756106            9     MOV 61H, #06H
+010A 756205           10     MOV 62H, #05H
+010D 756303           11     MOV 63H, #03H
+0110 756400           12     MOV 64H, #00H
+                      13     
+0113 856050           14     MOV 50H, 60H
+0116 856151           15     MOV 51H, 61H
+0119 856252           16     MOV 52H, 62H
+011C 856353           17     MOV 53H, 63H
+011F 856454           18     MOV 54H, 64H
+                      19     
+0122                  20     Loop1:
+0122 7B04             21     MOV R3, #4
+0124 7850             22     MOV R0, #50H
+0126 7951             23     MOV R1, #51H
+0128                  24     Loop2:
+0128 E6               25     MOV A, @R0
+0129 C3               26     CLR C
+012A 97               27     SUBB A, @R1
+012B 4003             28     JC Here1
+012D C6               29     XCH A, @R0
+012E C7               30     XCH A, @R1
+012F C6               31     XCH A, @R0
+0130                  32     Here1:
+0130 08               33     INC R0
+0131 09               34     INC R1
+0132 1B               35     DEC R3
+0133 BB00F2           36     CJNE R3,#0,Loop2
+0136 1C               37     DEC R4
+0137 BC00E8           38     CJNE R4,#0,Loop1
+                      39     
+013A 855070           40     MOV 70H, 50H
+013D 855171           41     MOV 71H, 51H
+0140 855272           42     MOV 72H, 52H
+0143 855373           43     MOV 73H, 53H
+0146 855474           44     MOV 74H, 54H
+0149 80FE             45     HERE:SJMP HERE
+                      46     END
+A51 MACRO ASSEMBLER  LAB1_3                                                               07/31/2018 13:18:43 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+HERE . . . . . . .  C ADDR   0149H   A   
+HERE1. . . . . . .  C ADDR   0130H   A   
+LOOP1. . . . . . .  C ADDR   0122H   A   
+LOOP2. . . . . . .  C ADDR   0128H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

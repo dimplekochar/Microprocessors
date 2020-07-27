@@ -1,0 +1,61 @@
+A51 MACRO ASSEMBLER  LW3_2                                                                08/19/2018 02:58:53 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lw3-2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lw3-2.asm SET(SMALL) DEBUG PRINT(.\Listings\lw3-2.lst) OBJECT(.\Objects
+                      \lw3-2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020050            2     LJMP MAIN
+0050                   3     ORG 50H
+                       4     ;----------------------------------------
+                       5             
+0050                   6     MAIN:
+0050                   7     Loop:
+0050 E4                8     CLR A
+0051 C3                9     CLR C
+0052 A291             10     MOV C, P1.1
+0054 33               11     RLC A
+0055 A290             12     MOV C, P1.0
+0057 33               13     RLC A
+0058 F550             14     MOV 50H, A
+005A E4               15     CLR A
+005B C3               16     CLR C
+005C A293             17     MOV C, P1.3
+005E 33               18     RLC A
+005F A292             19     MOV C, P1.2
+0061 33               20     RLC A
+0062 2550             21     ADD A, 50H
+0064 13               22     RRC A
+0065 9294             23     MOV P1.4, C
+0067 13               24     RRC A
+0068 9295             25     MOV P1.5, C
+006A 13               26     RRC A
+006B 9296             27     MOV P1.6, C
+006D 80E1             28     SJMP Loop
+                      29     
+                      30     
+006F 80FE             31     STOP:SJMP STOP
+                      32     
+                      33     END
+A51 MACRO ASSEMBLER  LW3_2                                                                08/19/2018 02:58:53 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+LOOP . . . . . . .  C ADDR   0050H   A   
+MAIN . . . . . . .  C ADDR   0050H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+STOP . . . . . . .  C ADDR   006FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

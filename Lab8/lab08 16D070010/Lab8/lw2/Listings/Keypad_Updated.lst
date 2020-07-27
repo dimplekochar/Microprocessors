@@ -1,0 +1,128 @@
+C51 COMPILER V9.59.0.0   KEYPAD_UPDATED                                                    10/10/2018 09:52:46 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE KEYPAD_UPDATED
+OBJECT MODULE PLACED IN .\Objects\Keypad_Updated.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\..\Keypad_Updated.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\Keypad_Updated.lst) TABS(2) OBJECT(.\Objects\Keypad_Updated.obj)
+
+line level    source
+
+   1          #include "at89c5131.h"
+   2          #include "stdio.h"
+   3          
+   4          void keypad_init(void)
+   5          {
+   6   1            P1=0xF0;
+   7   1       //     P1|=0x0F;
+   8   1            KBE=0xF0;  //MOV 0x9D,#0xF0  ;KBE
+   9   1            KBLS=0x0F;   //MOV 0x9C,#0x0F  ;KBLS
+  10   1            KBF=00; //0x9E,#00    ;KBF
+  11   1            while(KBF);
+  12   1            IEN1=0x01;   //MOV 0xB1,#0x01  ;IE1
+  13   1            EA=1;
+  14   1      } 
+  15          void delay_in_ms(unsigned int time)
+  16          {
+  17   1        int i,j;
+  18   1        for(i=0;i<time;i++)
+  19   1        {
+  20   2          for(j=0;j<382;j++);
+  21   2        }
+  22   1      }
+  23          unsigned char read_keypad(void)
+  24          {
+  25   1      
+  26   1         unsigned char key=0,row=0,col=0,no=0,no_1=0,temp=0;
+  27   1         unsigned int i=0;
+  28   1         unsigned char final_val=0;
+  29   1        
+  30   1         P1= 0xF0;
+  31   1        
+  32   1         temp=((~P1) & 0xF0)>>4; //row
+  33   1         i=0;
+  34   1         while(i<=3)
+  35   1         {
+  36   2            if(((temp>>i)&0x01)==1)
+  37   2            {
+  38   3              row=i;
+  39   3              break;
+  40   3            }
+  41   2            i++;      
+  42   2         }
+  43   1         P1=0x0F;
+  44   1         temp=((~P1) & 0x0F); //col 
+  45   1         i=0;
+  46   1         while(i<=3)
+  47   1         {
+  48   2            if(((temp>>i) & 0x01)==1)
+  49   2            {
+  50   3              col=i;      
+  51   3              break;
+  52   3            }
+  53   2            i++;      
+  54   2         }
+C51 COMPILER V9.59.0.0   KEYPAD_UPDATED                                                    10/10/2018 09:52:46 PAGE 2   
+
+  55   1         //col=i;
+  56   1         no=(4*row)+col;
+  57   1         //delay_in_ms(15);
+  58   1         P1=0xF0;
+  59   1         temp=((~P1) & 0xF0)>>4; //row 
+  60   1         i=0;
+  61   1         while(i<=3)
+  62   1         {
+  63   2            if(((temp>>i) & 0x01)==1)
+  64   2            {
+  65   3              row=i;  
+  66   3              break;
+  67   3            }
+  68   2            i++;      
+  69   2         }
+  70   1         P1=0x0F;
+  71   1         temp=((~P1)&0x0F);
+  72   1         i=0;
+  73   1         while(i<=3)
+  74   1         {
+  75   2            if(((temp>>i) & 0x01)==1)
+  76   2            {
+  77   3              col=i;  
+  78   3              break;
+  79   3            }
+  80   2            i++;      
+  81   2         }   
+  82   1         //col=i;
+  83   1         no_1=4*row+col;
+  84   1         if(no==no_1)
+  85   1         {
+  86   2            final_val=no;
+  87   2         }
+  88   1         final_val += 48;
+  89   1         
+  90   1         if(final_val > 57 && final_val < 65)
+  91   1          final_val += 7;
+  92   1         
+  93   1         P1=0xF0;
+  94   1         
+  95   1         while(P1!= 0xF0)
+  96   1             P1= 0xF0;
+  97   1         
+  98   1          KBF=0x00;
+  99   1          while(KBF); //Wait till flag gets cleared
+ 100   1           
+ 101   1         return final_val;
+ 102   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    311    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,91 @@
+A51 MACRO ASSEMBLER  LW3                                                                  08/06/2018 10:31:01 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lw3.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lw3.asm SET(SMALL) DEBUG PRINT(.\Listings\lw3.lst) OBJECT(.\Objects\lw3
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG 00H
+0000 020074            2             LJMP MAIN
+                       3     
+                       4     
+                       5     ;----------------------------------------------------------------
+0050                   6             ORG 50H
+                       7     
+0050                   8     memcpy:
+0050 AA50              9                     MOV R2, 50H ;Specified value of N in 50H moved to R2
+0052 A851             10                     MOV R0, 51H ;Specified value of P in 51H to read moved to R0 (A)
+0054 A952             11                     MOV R1, 52H ;Specified value of P in 52H to write moved to R1 (B)
+0056 E8               12                     MOV A, R0
+0057 99               13                     SUBB A, R1
+0058 5002             14                     JNC sidha
+005A 4007             15                     JC ulta
+005C                  16                     sidha:
+005C E6               17                     MOV A, @R0
+005D F7               18                     MOV @R1, A
+005E 08               19                     INC R0
+005F 09               20                     INC R1
+0060 DAFA             21                     DJNZ R2, sidha
+0062 22               22                     RET
+0063                  23                     ulta:
+0063 E8               24                     MOV A, R0
+0064 2A               25                     ADD A, R2
+0065 9401             26                     SUBB A, #1H
+0067 F8               27                     MOV R0, A
+0068 E9               28                     MOV A, R1
+0069 2A               29                     ADD A, R2
+006A 9401             30                     SUBB A, #1H
+006C F9               31                     MOV R1, A
+006D                  32                     loop:
+006D E6               33                     MOV A, @R0
+006E F7               34                     MOV @R1, A
+006F 18               35                     DEC R0
+0070 19               36                     DEC R1
+0071 DAFA             37                     DJNZ R2, loop
+0073 22               38                     RET
+                      39     ;----------------------------------------------------------------------
+                      40     
+0074                  41     MAIN:                                   
+0074 75500A           42                     MOV 50H, #10
+0077 755160           43                     MOV 51H, #60H
+007A 755265           44                     MOV 52H, #65H
+007D 756001           45                     MOV 60H, #1
+0080 756102           46                     MOV 61H, #2
+0083 756203           47                     MOV 62H, #3
+0086 756304           48                     MOV 63H, #4
+0089 756405           49                     MOV 64H, #5
+008C 756506           50                     MOV 65H, #6
+008F 756607           51                     MOV 66H, #7
+0092 756708           52                     MOV 67H, #8
+0095 756809           53                     MOV 68H, #9
+0098 75690A           54                     MOV 69H, #10
+009B 120050           55                     LCALL memcpy
+009E 80FE             56                     HERE:SJMP HERE
+                      57                     END
+A51 MACRO ASSEMBLER  LW3                                                                  08/06/2018 10:31:01 PAGE     2
+
+                             
+                             ;--------------------------------------------------------------------------
+A51 MACRO ASSEMBLER  LW3                                                                  08/06/2018 10:31:01 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+HERE . . . . . . .  C ADDR   009EH   A   
+LOOP . . . . . . .  C ADDR   006DH   A   
+MAIN . . . . . . .  C ADDR   0074H   A   
+MEMCPY . . . . . .  C ADDR   0050H   A   
+SIDHA. . . . . . .  C ADDR   005CH   A   
+ULTA . . . . . . .  C ADDR   0063H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

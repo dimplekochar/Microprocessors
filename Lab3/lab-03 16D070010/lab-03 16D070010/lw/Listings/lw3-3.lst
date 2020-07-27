@@ -1,0 +1,148 @@
+A51 MACRO ASSEMBLER  LW3_3                                                                08/19/2018 02:59:07 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lw3-3.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lw3-3.asm SET(SMALL) DEBUG PRINT(.\Listings\lw3-3.lst) OBJECT(.\Objects
+                      \lw3-3.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 0200DD            2     LJMP MAIN
+0050                   3     ORG 50H
+                       4     ;----------------------------------------
+0050                   5     readNibble:
+0050                   6     rel:
+0050 7590FF            7     MOV P1,#0FFH
+0053 120096            8     LCALL DELAY5
+0056 C297              9     CLR P1.7
+0058 C296             10     CLR P1.6
+005A C295             11     CLR P1.5
+005C C294             12     CLR P1.4
+005E 1200B3           13     LCALL DELAY1
+0061 A293             14     MOV C, P1.3
+0063 9297             15     MOV P1.7, C
+0065 A292             16     MOV C, P1.2
+0067 9296             17     MOV P1.6, C
+0069 A291             18     MOV C, P1.1
+006B 9295             19     MOV P1.5, C
+006D A290             20     MOV C, P1.0
+006F 9294             21     MOV P1.4, C
+0071 E4               22     CLR A
+0072 C3               23     CLR C
+0073 A293             24     MOV C, P1.3
+0075 33               25     RLC A
+0076 A292             26     MOV C, P1.2
+0078 33               27     RLC A
+0079 A291             28     MOV C, P1.1
+007B 33               29     RLC A
+007C A290             30     MOV C, P1.0
+007E 33               31     RLC A
+007F F560             32     MOV 60H, A
+0081 120096           33     LCALL DELAY5
+0084 E4               34     CLR A
+0085 C3               35     CLR C
+0086 A293             36     MOV C, P1.3
+0088 33               37     RLC A
+0089 A292             38     MOV C, P1.2
+008B 33               39     RLC A
+008C A291             40     MOV C, P1.1
+008E 33               41     RLC A
+008F A290             42     MOV C, P1.0
+0091 33               43     RLC A
+0092 B40FBB           44     CJNE A, #0FH, rel
+0095 22               45     RET
+                      46     
+0096                  47     DELAY5: 
+                      48     USING 0
+0096 C0D0             49     PUSH PSW
+0098 C003             50     PUSH AR3
+009A C004             51     PUSH AR4
+009C C005             52     PUSH AR5
+009E 7B64             53     MOV R3,#100
+00A0 7CC8             54     del5:MOV R4,#200 
+00A2 7DFF             55                BACK55: MOV R5,#0FFH 
+00A4 DDFE             56                           BACK5: DJNZ R5, BACK5 
+00A6 DCFC             57                                     DJNZ R4, BACK5
+A51 MACRO ASSEMBLER  LW3_3                                                                08/19/2018 02:59:07 PAGE     2
+
+00A8 DBF6             58                                     DJNZ R3,del5
+00AA D005             59     POP AR5
+00AC D004             60     POP AR4
+00AE D003             61     POP AR3
+00B0 D0D0             62     POP PSW
+00B2 22               63     RET
+                      64     
+00B3                  65     DELAY1: 
+                      66     USING 0
+00B3 C0D0             67     PUSH PSW
+00B5 C003             68     PUSH AR3
+00B7 C004             69     PUSH AR4
+00B9 C005             70     PUSH AR5
+00BB 7B14             71     MOV R3,#20
+00BD 7CC8             72     del1:MOV R4,#200 
+00BF 7DFF             73                BACK11: MOV R5,#0FFH 
+00C1 DDFE             74                           BACK1: DJNZ R5, BACK1 
+00C3 DCFA             75                                     DJNZ R4, BACK11
+00C5 DBF6             76                                     DJNZ R3,del1
+00C7 D005             77     POP AR5
+00C9 D004             78     POP AR4
+00CB D003             79     POP AR3
+00CD D0D0             80     POP PSW
+00CF 22               81     RET
+                      82     
+00D0                  83     packNibbles:
+00D0 E4               84     CLR A
+00D1 C3               85     CLR C
+00D2 E54E             86     MOV A, 4EH
+00D4 23               87     RL A
+00D5 23               88     RL A
+00D6 23               89     RL A
+00D7 23               90     RL A
+00D8 254F             91     ADD A, 4FH
+00DA F550             92     MOV 50H, A
+00DC 22               93     RET
+                      94     
+00DD                  95     MAIN:
+00DD 120050           96     LCALL readNibble; Read the MSB from the user and store in into locations 4EH
+00E0 85604E           97     MOV 4EH, 60H
+00E3 120050           98     LCALL readNibble; Read the LSB from the user and store in into locations 4FH
+00E6 85604F           99     MOV 4FH, 60H
+00E9 1200D0          100     LCALL packNibbles;
+                     101     
+00EC 80FE            102     STOP:SJMP STOP
+                     103     
+                     104     END
+A51 MACRO ASSEMBLER  LW3_3                                                                08/19/2018 02:59:07 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR3. . . . . . . .  D ADDR   0003H   A   
+AR4. . . . . . . .  D ADDR   0004H   A   
+AR5. . . . . . . .  D ADDR   0005H   A   
+BACK1. . . . . . .  C ADDR   00C1H   A   
+BACK11 . . . . . .  C ADDR   00BFH   A   
+BACK5. . . . . . .  C ADDR   00A4H   A   
+BACK55 . . . . . .  C ADDR   00A2H   A   
+DEL1 . . . . . . .  C ADDR   00BDH   A   
+DEL5 . . . . . . .  C ADDR   00A0H   A   
+DELAY1 . . . . . .  C ADDR   00B3H   A   
+DELAY5 . . . . . .  C ADDR   0096H   A   
+MAIN . . . . . . .  C ADDR   00DDH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PACKNIBBLES. . . .  C ADDR   00D0H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READNIBBLE . . . .  C ADDR   0050H   A   
+REL. . . . . . . .  C ADDR   0050H   A   
+STOP . . . . . . .  C ADDR   00ECH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
